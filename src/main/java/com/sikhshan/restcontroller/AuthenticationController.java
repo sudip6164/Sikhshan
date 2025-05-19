@@ -3,6 +3,7 @@ package com.sikhshan.restcontroller;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,12 +18,14 @@ import com.sikhshan.repository.UserRepository;
 
 @RestController
 @RequestMapping("/api/users")
-public class UserController {
+public class AuthenticationController {	 
 	@Autowired
 	private UserRepository userRepository;
 	
 	@PostMapping("/register")
     public User registerUser(@RequestBody User user) {
+		String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(12));
+        user.setPassword(hashedPassword);
         user.setCreatedAt(LocalDateTime.now());
         return userRepository.save(user);
     }
@@ -33,8 +36,9 @@ public class UserController {
 
 	        if (optionalUser.isPresent()) {
 	            User user = optionalUser.get();
+	            boolean passwordMatch = BCrypt.checkpw(loginRequest.getPassword(), user.getPassword());
 
-	            if (user.getPassword().equals(loginRequest.getPassword()) && user.getRole() == loginRequest.getRole()) {
+	            if (passwordMatch && user.getRole() == loginRequest.getRole()) {
 	                String message;
 	                switch (user.getRole()) {
 	                    case Student:
