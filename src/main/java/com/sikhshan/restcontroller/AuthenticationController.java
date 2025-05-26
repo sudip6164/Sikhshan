@@ -47,8 +47,8 @@ public class AuthenticationController {
 	                    case Faculty:
 	                        message = "Welcome to Faculty Dashboard!";
 	                        break;
-	                    case Admin:
-	                        message = "Welcome to Admin Panel!";
+	                    case Superadmin:
+	                        message = "Welcome to Super Admin Panel!";
 	                        break;
 	                    default:
 	                        message = "Welcome!";

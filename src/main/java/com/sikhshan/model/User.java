@@ -2,25 +2,33 @@ package com.sikhshan.model;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "user")
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
+	@Column(length = 100, nullable = false, unique = true)
 	private String email;
+	
+	@Column(length = 255, nullable = false)
 	private String password;
 
 	@Enumerated(EnumType.STRING)
+	@Column(length = 20)
 	private Role role;
 	
+	@Column(nullable = false)
 	private LocalDateTime createdAt;
 
 	public long getId() {
@@ -58,6 +66,7 @@ public class User {
 	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
+	
 
 	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
