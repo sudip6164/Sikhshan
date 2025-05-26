@@ -41,13 +41,13 @@ public class AuthenticationController {
 	            if (passwordMatch && user.getRole() == loginRequest.getRole()) {
 	                String message;
 	                switch (user.getRole()) {
-	                    case Student:
+	                    case STUDENT:
 	                        message = "Welcome to Student Dashboard!";
 	                        break;
-	                    case Faculty:
+	                    case FACULTY:
 	                        message = "Welcome to Faculty Dashboard!";
 	                        break;
-	                    case Superadmin:
+	                    case SUPERADMIN:
 	                        message = "Welcome to Super Admin Panel!";
 	                        break;
 	                    default:
