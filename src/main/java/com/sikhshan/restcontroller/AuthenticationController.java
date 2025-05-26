@@ -1,6 +1,7 @@
 package com.sikhshan.restcontroller;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -15,12 +16,16 @@ import com.sikhshan.dto.LoginRequest;
 import com.sikhshan.dto.LoginResponse;
 import com.sikhshan.model.User;
 import com.sikhshan.repository.UserRepository;
+import com.sikhshan.service.JwtService;
 
 @RestController
 @RequestMapping("/api/users")
 public class AuthenticationController {	 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private JwtService jwtService;
 	
 	@PostMapping("/register")
     public User registerUser(@RequestBody User user) {
@@ -30,35 +35,26 @@ public class AuthenticationController {
         return userRepository.save(user);
     }
 	
-	 @PostMapping("/login")
-	    public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
-	        Optional<User> optionalUser = userRepository.findByEmail(loginRequest.getEmail());
+	@PostMapping("/login")
+	public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
+	    Optional<User> optionalUser = userRepository.findByEmail(loginRequest.getEmail());
 
-	        if (optionalUser.isPresent()) {
-	            User user = optionalUser.get();
-	            boolean passwordMatch = BCrypt.checkpw(loginRequest.getPassword(), user.getPassword());
+	    if (optionalUser.isPresent()) {
+	        User user = optionalUser.get();
+	        boolean passwordMatch = BCrypt.checkpw(loginRequest.getPassword(), user.getPassword());
 
-	            if (passwordMatch && user.getRole() == loginRequest.getRole()) {
-	                String message;
-	                switch (user.getRole()) {
-	                    case STUDENT:
-	                        message = "Welcome to Student Dashboard!";
-	                        break;
-	                    case FACULTY:
-	                        message = "Welcome to Faculty Dashboard!";
-	                        break;
-	                    case SUPERADMIN:
-	                        message = "Welcome to Super Admin Panel!";
-	                        break;
-	                    default:
-	                        message = "Welcome!";
-	                }
-	                return ResponseEntity.ok(new LoginResponse(message));
-	            } else {
-	                return ResponseEntity.status(401).body("Invalid credentials or role");
-	            }
+	        if (passwordMatch && user.getRole() == loginRequest.getRole()) {
+	            String token = jwtService.generateToken(user.getEmail());
+	            return ResponseEntity.ok(Map.of(
+	                "message", "Login successful",
+	                "token", token,
+	                "role", user.getRole().name()
+	            ));
 	        } else {
-	            return ResponseEntity.status(401).body("User not found");
+	            return ResponseEntity.status(401).body("Invalid credentials or role");
 	        }
+	    } else {
+	        return ResponseEntity.status(401).body("User not found");
 	    }
+	}
 }
