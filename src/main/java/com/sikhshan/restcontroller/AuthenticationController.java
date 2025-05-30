@@ -44,7 +44,7 @@ public class AuthenticationController {
 	        boolean passwordMatch = BCrypt.checkpw(loginRequest.getPassword(), user.getPassword());
 
 	        if (passwordMatch && user.getRole() == loginRequest.getRole()) {
-	            String token = jwtService.generateToken(user.getEmail());
+	            String token = jwtService.generateToken(user.getEmail(), user.getRole().name());
 	            return ResponseEntity.ok(Map.of(
 	                "message", "Login successful",
 	                "token", token,
