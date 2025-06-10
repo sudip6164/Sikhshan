@@ -10,29 +10,29 @@ function StudentProfile() {
   const [previewImage, setPreviewImage] = useState(null)
   const [activeTab, setActiveTab] = useState("profile")
   const [editedProfile, setEditedProfile] = useState({
-    name: "John Doe",
-    email: "john.doe@example.com",
-    phone: "+1234567890",
-    address: "123 Main St, City",
-    gender: "Male",
-    dateOfBirth: "1995-01-01",
+    name: currentUser?.name || "",
+    email: currentUser?.email || "",
+    phone: currentUser?.phone || "",
+    address: currentUser?.address || "",
+    gender: currentUser?.gender || "",
+    dateOfBirth: currentUser?.dateOfBirth || "",
   })
 
-  // Mock student data (replace with real data as needed)
+  // Student data from currentUser
   const [student, setStudent] = useState({
-    name: currentUser?.name || "John Doe",
-    email: currentUser?.email || "john.doe@example.com",
-    degree: "B.Tech Computer Science",
-    year: "3rd Year",
-    semester: "6th Semester",
-    rollNumber: "CS2021001",
-    department: "Computer Science and Engineering",
-    phone: "+91-9876543210",
-    address: "123, Main Street, City, State, 123456",
-    dob: "2002-05-15",
-    gender: "Male",
-    guardian: "Mr. Rajesh Kumar",
-    nationality: "Indian",
+    name: currentUser?.name || "",
+    email: currentUser?.email || "",
+    degree: currentUser?.degree || "",
+    year: currentUser?.year || "",
+    semester: currentUser?.semester || "",
+    rollNumber: currentUser?.rollNumber || "",
+    department: currentUser?.department || "",
+    phone: currentUser?.phone || "",
+    address: currentUser?.address || "",
+    dob: currentUser?.dob || "",
+    gender: currentUser?.gender || "",
+    guardian: currentUser?.guardian || "",
+    nationality: currentUser?.nationality || "",
   })
 
   // Mock notifications data
@@ -128,12 +128,12 @@ function StudentProfile() {
 
   const handleCancel = () => {
     setEditedProfile({
-      name: "John Doe",
-      email: "john.doe@example.com",
-      phone: "+1234567890",
-      address: "123 Main St, City",
-      gender: "Male",
-      dateOfBirth: "1995-01-01",
+      name: currentUser?.name || "",
+      email: currentUser?.email || "",
+      phone: currentUser?.phone || "",
+      address: currentUser?.address || "",
+      gender: currentUser?.gender || "",
+      dateOfBirth: currentUser?.dateOfBirth || "",
     })
     setIsEditing(false)
   }
@@ -147,7 +147,7 @@ function StudentProfile() {
   }
 
   const renderProfileSection = () => (
-      <div className="max-w-2xl mx-auto bg-white rounded-lg shadow p-8">
+    <div className="max-w-2xl mx-auto bg-white rounded-lg shadow p-8">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-gray-900">Profile Information</h2>
         {!isEditing ? (
@@ -175,8 +175,64 @@ function StudentProfile() {
         )}
       </div>
 
+      {/* Profile Image Section */}
+      <div className="flex flex-col items-center mb-6">
+        <div className="relative">
+          {previewImage ? (
+            <img
+              src={previewImage}
+              alt="Profile"
+              className="w-32 h-32 rounded-full object-cover border-4 border-primary"
+            />
+          ) : (
+            <div className="w-32 h-32 rounded-full bg-primary flex items-center justify-center text-white text-4xl font-bold">
+              {editedProfile.name?.charAt(0) || "U"}
+            </div>
+          )}
+          {isEditing && (
+            <label
+              htmlFor="profile-image"
+              className="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-lg cursor-pointer hover:bg-gray-100"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 text-gray-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+              </svg>
+              <input
+                type="file"
+                id="profile-image"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="hidden"
+              />
+            </label>
+          )}
+        </div>
+        {isEditing && (
+          <p className="mt-2 text-sm text-gray-500">
+            Click the camera icon to change your profile picture
+          </p>
+        )}
+      </div>
+
       <div className="space-y-6">
-          <div>
+        <div>
           <label className="block text-sm font-medium text-gray-700">Full Name</label>
           {isEditing ? (
             <input
@@ -189,7 +245,7 @@ function StudentProfile() {
           ) : (
             <p className="mt-1 text-gray-900">{editedProfile.name}</p>
           )}
-          </div>
+        </div>
 
         <div>
           <label className="block text-sm font-medium text-gray-700">Email</label>
@@ -206,7 +262,7 @@ function StudentProfile() {
           )}
         </div>
 
-          <div>
+        <div>
           <label className="block text-sm font-medium text-gray-700">Phone</label>
           {isEditing ? (
             <input
@@ -219,9 +275,9 @@ function StudentProfile() {
           ) : (
             <p className="mt-1 text-gray-900">{editedProfile.phone}</p>
           )}
-          </div>
+        </div>
 
-          <div>
+        <div>
           <label className="block text-sm font-medium text-gray-700">Address</label>
           {isEditing ? (
             <input
@@ -234,9 +290,9 @@ function StudentProfile() {
           ) : (
             <p className="mt-1 text-gray-900">{editedProfile.address}</p>
           )}
-          </div>
+        </div>
 
-          <div>
+        <div>
           <label className="block text-sm font-medium text-gray-700">Gender</label>
           {isEditing ? (
             <select
@@ -252,9 +308,9 @@ function StudentProfile() {
           ) : (
             <p className="mt-1 text-gray-900">{editedProfile.gender}</p>
           )}
-          </div>
+        </div>
 
-          <div>
+        <div>
           <label className="block text-sm font-medium text-gray-700">Date of Birth</label>
           {isEditing ? (
             <input
@@ -282,7 +338,7 @@ function StudentProfile() {
         >
           View All Notifications
         </Link>
-          </div>
+      </div>
       <div className="space-y-4">
         {notifications.map((notification) => (
           <div
@@ -292,7 +348,7 @@ function StudentProfile() {
             }`}
           >
             <div className="flex justify-between items-start">
-          <div>
+              <div>
                 <h3 className="font-semibold text-gray-900">{notification.title}</h3>
                 <p className="text-gray-600 mt-1">{notification.message}</p>
               </div>
@@ -314,16 +370,16 @@ function StudentProfile() {
         >
           View All Assignments
         </Link>
-          </div>
+      </div>
       <div className="space-y-4">
         {pendingAssignments.map((assignment) => (
           <div key={assignment.id} className="p-4 border rounded-lg">
             <div className="flex justify-between items-start">
-          <div>
+              <div>
                 <h3 className="font-semibold text-gray-900">{assignment.title}</h3>
                 <p className="text-gray-600 mt-1">{assignment.course}</p>
                 <p className="text-sm text-gray-500 mt-2">Due: {assignment.dueDate}</p>
-          </div>
+              </div>
               <div className="flex items-center space-x-2">
                 <span className={`px-3 py-1 rounded-full text-sm ${
                   assignment.status === "Not Started"
@@ -338,12 +394,12 @@ function StudentProfile() {
                 >
                   Submit
                 </Link>
-          </div>
-          </div>
+              </div>
+            </div>
           </div>
         ))}
-          </div>
-          </div>
+      </div>
+    </div>
   )
 
   return (
