@@ -2,6 +2,7 @@
 import { Link, useLocation } from "react-router-dom"
 import { useAuth } from "../../contexts/AuthContext"
 import { useState } from "react"
+import logo from "../../assets/images/logo.png"
 
 function Sidebar() {
   const { currentUser } = useAuth()
@@ -60,17 +61,23 @@ function Sidebar() {
 
   return (
     <div
-      className={`bg-dark text-white ${
+      className={`bg-white text-gray-800 ${
         collapsed ? "w-20" : "w-64"
       } space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform ${
         collapsed ? "-translate-x-0" : "-translate-x-full"
       } md:relative md:translate-x-0 transition duration-200 ease-in-out z-30`}
     >
-      <div className="flex items-center justify-between px-4">
-        {!collapsed && <span className="text-2xl font-extrabold text-rose-500">AcademiX</span>}
+      <div className="flex items-center justify-center px-4">
+        {!collapsed && (
+          <img
+            src={logo}
+            alt="Sikhshan Logo"
+            className="h-36 w-auto object-contain -my-8"
+          />
+        )}
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="p-2 rounded-md bg-dark-light text-white hover:bg-primary transition-colors duration-200 md:hidden"
+          className="absolute right-2 p-2 rounded-md bg-gray-100 text-gray-800 hover:bg-gray-200 transition-colors duration-200 md:hidden"
         >
           {collapsed ? "→" : "←"}
         </button>
@@ -84,7 +91,7 @@ function Sidebar() {
             className={`flex items-center py-2.5 px-4 rounded transition duration-200 ${
               location.pathname === item.path
                 ? "bg-primary text-white"
-                : "text-gray-400 hover:bg-dark-light hover:text-white"
+                : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
             } ${collapsed ? "justify-center" : ""}`}
           >
             <Icon name={item.icon} />
@@ -94,11 +101,11 @@ function Sidebar() {
       </nav>
 
       <div className="px-4 mt-auto">
-        <div className="pt-4 border-t border-dark-light">
+        <div className="pt-4 border-t border-gray-200">
           {!collapsed && (
-            <div className="text-sm text-gray-400">
+            <div className="text-sm text-gray-600">
               <p>Logged in as:</p>
-              <p className="font-medium text-white">{currentUser?.name}</p>
+              <p className="font-medium text-gray-900">{currentUser?.name}</p>
               <p className="capitalize">{currentUser?.role}</p>
             </div>
           )}

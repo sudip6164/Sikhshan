@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { useAuth } from "../../contexts/AuthContext"
 import { Link } from "react-router-dom"
+import logo from "../../assets/images/logo.png"
 
 function Navbar() {
   const { currentUser, logout } = useAuth()
@@ -44,8 +45,11 @@ function Navbar() {
             </button>
             <div className="flex-shrink-0 flex items-center">
               <Link to="/" className="flex items-center">
-                <span className="text-xl font-bold text-primary">AcademiX</span>
-                <span className="ml-2 text-xl font-bold text-gray-800">System</span>
+                <img
+                  src={logo}
+                  alt="Sikhshan Logo"
+                  className="h-20 w-auto sm:h-24 object-contain -my-2"
+                />
               </Link>
             </div>
           </div>
