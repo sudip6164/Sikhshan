@@ -1,12 +1,9 @@
 import React, { useState } from "react"
 import { useAuth } from "../../contexts/AuthContext"
-import { Link } from "react-router-dom"
 
 function StudentProfile() {
   const { currentUser } = useAuth()
   const [isEditing, setIsEditing] = useState(false)
-  const [isEditingProfile, setIsEditingProfile] = useState(false)
-  const [profileImage, setProfileImage] = useState(null)
   const [previewImage, setPreviewImage] = useState(null)
   const [activeTab, setActiveTab] = useState("profile")
   const [editedProfile, setEditedProfile] = useState({
@@ -17,104 +14,16 @@ function StudentProfile() {
     gender: currentUser?.gender || "",
     dateOfBirth: currentUser?.dateOfBirth || "",
   })
-
-  // Student data from currentUser
-  const [student, setStudent] = useState({
-    name: currentUser?.name || "",
-    email: currentUser?.email || "",
-    degree: currentUser?.degree || "",
-    year: currentUser?.year || "",
-    semester: currentUser?.semester || "",
-    rollNumber: currentUser?.rollNumber || "",
-    department: currentUser?.department || "",
-    phone: currentUser?.phone || "",
-    address: currentUser?.address || "",
-    dob: currentUser?.dob || "",
-    gender: currentUser?.gender || "",
-    guardian: currentUser?.guardian || "",
-    nationality: currentUser?.nationality || "",
-  })
-
-  // Mock notifications data
-  const notifications = [
-    {
-      id: 1,
-      title: "New Assignment Posted",
-      message: "CS101 - Assignment 3 has been posted",
-      time: "2 hours ago",
-      isRead: false,
-    },
-    {
-      id: 2,
-      title: "Assignment Due Reminder",
-      message: "CS201 - Project submission due in 2 days",
-      time: "1 day ago",
-      isRead: true,
-    },
-    {
-      id: 3,
-      title: "Grade Posted",
-      message: "Your grade for CS101 - Assignment 2 has been posted",
-      time: "3 days ago",
-      isRead: true,
-    },
-  ]
-
-  // Mock assignments data
-  const pendingAssignments = [
-    {
-      id: 1,
-      title: "CS101 - Assignment 3",
-      course: "Introduction to Computer Science",
-      dueDate: "2024-03-20",
-      status: "Not Started",
-    },
-    {
-      id: 2,
-      title: "CS201 - Project",
-      course: "Data Structures and Algorithms",
-      dueDate: "2024-03-25",
-      status: "In Progress",
-    },
-  ]
-
-  const completedAssignments = [
-    {
-      id: 3,
-      title: "CS101 - Assignment 2",
-      course: "Introduction to Computer Science",
-      submittedDate: "2024-03-10",
-      grade: "A",
-    },
-    {
-      id: 4,
-      title: "CS201 - Midterm Project",
-      course: "Data Structures and Algorithms",
-      submittedDate: "2024-03-05",
-      grade: "B+",
-    },
-  ]
-
+  
   const handleImageChange = (e) => {
     const file = e.target.files[0]
     if (file) {
-      setProfileImage(file)
       const reader = new FileReader()
       reader.onloadend = () => {
         setPreviewImage(reader.result)
       }
       reader.readAsDataURL(file)
     }
-  }
-
-  const handleProfileEdit = () => {
-    setIsEditingProfile(true)
-  }
-
-  const handleProfileSave = () => {
-    setIsEditingProfile(false)
-    setProfileImage(null)
-    setPreviewImage(null)
   }
 
   const handleEdit = () => {
@@ -324,80 +233,6 @@ function StudentProfile() {
             <p className="mt-1 text-gray-900">{editedProfile.dateOfBirth}</p>
           )}
         </div>
-      </div>
-    </div>
-  )
-
-  const renderNotificationsSection = () => (
-    <div className="max-w-2xl mx-auto bg-white rounded-lg shadow p-8">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Recent Notifications</h2>
-        <Link
-          to="/notifications"
-          className="text-primary hover:text-primary-dark transition-colors duration-200"
-        >
-          View All Notifications
-        </Link>
-      </div>
-      <div className="space-y-4">
-        {notifications.map((notification) => (
-          <div
-            key={notification.id}
-            className={`p-4 rounded-lg border ${
-              notification.isRead ? "bg-white" : "bg-primary bg-opacity-5"
-            }`}
-          >
-            <div className="flex justify-between items-start">
-              <div>
-                <h3 className="font-semibold text-gray-900">{notification.title}</h3>
-                <p className="text-gray-600 mt-1">{notification.message}</p>
-              </div>
-              <span className="text-sm text-gray-500">{notification.time}</span>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-
-  const renderAssignmentsSection = () => (
-    <div className="max-w-2xl mx-auto bg-white rounded-lg shadow p-8">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-900">Recent Assignments</h2>
-        <Link
-          to="/assignments"
-          className="text-primary hover:text-primary-dark transition-colors duration-200"
-        >
-          View All Assignments
-        </Link>
-      </div>
-      <div className="space-y-4">
-        {pendingAssignments.map((assignment) => (
-          <div key={assignment.id} className="p-4 border rounded-lg">
-            <div className="flex justify-between items-start">
-              <div>
-                <h3 className="font-semibold text-gray-900">{assignment.title}</h3>
-                <p className="text-gray-600 mt-1">{assignment.course}</p>
-                <p className="text-sm text-gray-500 mt-2">Due: {assignment.dueDate}</p>
-              </div>
-              <div className="flex items-center space-x-2">
-                <span className={`px-3 py-1 rounded-full text-sm ${
-                  assignment.status === "Not Started"
-                    ? "bg-yellow-100 text-yellow-800"
-                    : "bg-blue-100 text-blue-800"
-                }`}>
-                  {assignment.status}
-                </span>
-                <Link
-                  to="/assignments"
-                  className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors duration-200"
-                >
-                  Submit
-                </Link>
-              </div>
-            </div>
-          </div>
-        ))}
       </div>
     </div>
   )
