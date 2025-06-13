@@ -32,6 +32,7 @@ import AssignmentListFaculty from "./pages/assignments/AssignmentListFaculty"
 // Quiz Pages
 import QuizCreation from "./pages/quizzes/QuizCreation"
 import QuizAttempt from "./pages/quizzes/QuizAttempt"
+import QuizListFaculty from "./pages/quizzes/QuizListFaculty"
 
 // Other Pages
 import Chat from "./pages/communication/Chat"
@@ -64,8 +65,8 @@ function App() {
             <Route path="faculty" element={<FacultyDashboard />} />
             <Route path="faculty/courses" element={<CourseListFaculty />} />
             <Route path="faculty/assignments/create" element={<AssignmentCreation />} />
-            <Route path="faculty/quizzes/create" element={<QuizCreation />} />
             <Route path="faculty/assignments" element={<AssignmentListFaculty />} />
+            <Route path="faculty/quizzes" element={<QuizListFaculty />} />
 
             {/* Student Routes */}
             <Route path="student" element={<StudentDashboard />} />
