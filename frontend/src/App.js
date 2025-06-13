@@ -27,6 +27,7 @@ import AssignmentCreation from "./pages/assignments/AssignmentCreation"
 import AssignmentSubmission from "./pages/assignments/AssignmentSubmission"
 import AssignmentView from "./pages/assignments/AssignmentView"
 import CompletedAssignmentView from "./pages/assignments/CompletedAssignmentView"
+import AssignmentListFaculty from "./pages/assignments/AssignmentListFaculty"
 
 // Quiz Pages
 import QuizCreation from "./pages/quizzes/QuizCreation"
@@ -64,6 +65,7 @@ function App() {
             <Route path="faculty/courses" element={<CourseListFaculty />} />
             <Route path="faculty/assignments/create" element={<AssignmentCreation />} />
             <Route path="faculty/quizzes/create" element={<QuizCreation />} />
+            <Route path="faculty/assignments" element={<AssignmentListFaculty />} />
 
             {/* Student Routes */}
             <Route path="student" element={<StudentDashboard />} />

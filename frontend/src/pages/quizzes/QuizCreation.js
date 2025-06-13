@@ -173,7 +173,7 @@ function QuizCreation() {
                 value={formData.title}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary"
               />
             </div>
 
@@ -188,7 +188,7 @@ function QuizCreation() {
                 value={formData.course}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary"
               >
                 <option value="">Select a course</option>
                 {courses.map((course) => (
@@ -212,7 +212,7 @@ function QuizCreation() {
                 onChange={handleChange}
                 required
                 min="1"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary"
               />
             </div>
 
@@ -228,7 +228,7 @@ function QuizCreation() {
                 value={formData.startDate}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary"
               />
             </div>
 
@@ -244,7 +244,7 @@ function QuizCreation() {
                 value={formData.startTime}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary"
               />
             </div>
 
@@ -261,7 +261,7 @@ function QuizCreation() {
                 onChange={handleChange}
                 required
                 min="1"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary"
               />
             </div>
 
@@ -275,7 +275,7 @@ function QuizCreation() {
                 name="showResults"
                 value={formData.showResults}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary"
               >
                 <option value="immediately">Immediately after submission</option>
                 <option value="after_due">After due date</option>
@@ -294,7 +294,7 @@ function QuizCreation() {
                 value={formData.description}
                 onChange={handleChange}
                 rows="3"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary"
               ></textarea>
             </div>
 
@@ -308,7 +308,7 @@ function QuizCreation() {
                     type="checkbox"
                     checked={formData.shuffleQuestions}
                     onChange={handleChange}
-                    className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                    className="focus:ring-primary h-4 w-4 text-primary border-gray-300 rounded"
                   />
                 </div>
                 <div className="ml-3 text-sm">
@@ -329,21 +329,21 @@ function QuizCreation() {
                 <button
                   type="button"
                   onClick={() => addQuestion("multiple_choice")}
-                  className="px-3 py-1 bg-indigo-600 text-white text-sm rounded hover:bg-indigo-700"
+                  className="px-3 py-1 bg-primary text-white text-sm rounded hover:bg-primary-700"
                 >
                   Add Multiple Choice
                 </button>
                 <button
                   type="button"
                   onClick={() => addQuestion("true_false")}
-                  className="px-3 py-1 bg-indigo-600 text-white text-sm rounded hover:bg-indigo-700"
+                  className="px-3 py-1 bg-primary text-white text-sm rounded hover:bg-primary-700"
                 >
                   Add True/False
                 </button>
                 <button
                   type="button"
                   onClick={() => addQuestion("short_answer")}
-                  className="px-3 py-1 bg-indigo-600 text-white text-sm rounded hover:bg-indigo-700"
+                  className="px-3 py-1 bg-primary text-white text-sm rounded hover:bg-primary-700"
                 >
                   Add Short Answer
                 </button>
@@ -377,7 +377,7 @@ function QuizCreation() {
                           value={question.text}
                           onChange={(e) => handleQuestionChange(question.id, "text", e.target.value)}
                           required
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary"
                         />
                       </div>
                       <div>
@@ -388,7 +388,7 @@ function QuizCreation() {
                           onChange={(e) => handleQuestionChange(question.id, "points", Number.parseInt(e.target.value))}
                           required
                           min="1"
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary"
                         />
                       </div>
                     </div>
@@ -401,7 +401,7 @@ function QuizCreation() {
                           <button
                             type="button"
                             onClick={() => addOption(question.id)}
-                            className="text-sm text-indigo-600 hover:text-indigo-800"
+                            className="text-sm text-primary hover:text-primary-800"
                           >
                             Add Option
                           </button>
@@ -413,7 +413,7 @@ function QuizCreation() {
                               type="radio"
                               checked={option.isCorrect}
                               onChange={() => handleOptionChange(question.id, option.id, "isCorrect", true)}
-                              className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                              className="focus:ring-primary h-4 w-4 text-primary border-gray-300"
                             />
                             <input
                               type="text"
@@ -421,7 +421,7 @@ function QuizCreation() {
                               onChange={(e) => handleOptionChange(question.id, option.id, "text", e.target.value)}
                               placeholder="Option text"
                               required
-                              className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                              className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary"
                             />
                             {question.options.length > 2 && (
                               <button
@@ -447,7 +447,7 @@ function QuizCreation() {
                               id={`true-${question.id}`}
                               checked={question.answer === "true"}
                               onChange={() => handleQuestionChange(question.id, "answer", "true")}
-                              className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                              className="focus:ring-primary h-4 w-4 text-primary border-gray-300"
                             />
                             <label htmlFor={`true-${question.id}`} className="ml-2 block text-sm text-gray-700">
                               True
@@ -459,7 +459,7 @@ function QuizCreation() {
                               id={`false-${question.id}`}
                               checked={question.answer === "false"}
                               onChange={() => handleQuestionChange(question.id, "answer", "false")}
-                              className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
+                              className="focus:ring-primary h-4 w-4 text-primary border-gray-300"
                             />
                             <label htmlFor={`false-${question.id}`} className="ml-2 block text-sm text-gray-700">
                               False
@@ -477,7 +477,7 @@ function QuizCreation() {
                           value={question.answer}
                           onChange={(e) => handleQuestionChange(question.id, "answer", e.target.value)}
                           required
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary"
                           placeholder="Enter the correct answer"
                         />
                       </div>
@@ -491,13 +491,13 @@ function QuizCreation() {
           <div className="mt-8 flex justify-end">
             <button
               type="button"
-              className="mr-3 px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="mr-3 px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
             >
               Save as Draft
             </button>
             <button
               type="submit"
-              className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
             >
               Create Quiz
             </button>

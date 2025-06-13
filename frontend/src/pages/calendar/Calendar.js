@@ -240,7 +240,7 @@ function Calendar() {
                             key={event.id}
                             className={`text-xs truncate px-1 py-0.5 rounded ${
                               event.type === "assignment"
-                                ? "bg-indigo-100 text-indigo-800"
+                                ? "bg-primary-100 text-primary-800"
                                 : event.type === "exam"
                                   ? "bg-red-100 text-red-800"
                                   : "bg-green-100 text-green-800"
@@ -267,7 +267,7 @@ function Calendar() {
             {!isStudent && (
               <button
                 onClick={toggleEventForm}
-                className="px-3 py-1 bg-indigo-600 text-white text-sm rounded hover:bg-indigo-700"
+                className="px-3 py-1 bg-primary text-white text-sm rounded hover:bg-primary-dark"
               >
                 {eventForm.visible ? "Cancel" : "Add Event"}
               </button>
@@ -287,7 +287,7 @@ function Calendar() {
                   value={eventForm.title}
                   onChange={handleEventFormChange}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary"
                 />
               </div>
 
@@ -301,7 +301,7 @@ function Calendar() {
                   value={eventForm.description}
                   onChange={handleEventFormChange}
                   rows="2"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary"
                 ></textarea>
               </div>
 
@@ -317,7 +317,7 @@ function Calendar() {
                     value={eventForm.startTime}
                     onChange={handleEventFormChange}
                     required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary"
                   />
                 </div>
 
@@ -332,7 +332,7 @@ function Calendar() {
                     value={eventForm.endTime}
                     onChange={handleEventFormChange}
                     required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary"
                   />
                 </div>
               </div>
@@ -346,7 +346,7 @@ function Calendar() {
                   name="type"
                   value={eventForm.type}
                   onChange={handleEventFormChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary focus:border-primary"
                 >
                   <option value="assignment">Assignment</option>
                   <option value="exam">Exam</option>
@@ -356,7 +356,7 @@ function Calendar() {
 
               <button
                 type="submit"
-                className="w-full px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="w-full px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
               >
                 Add Event
               </button>
@@ -374,7 +374,7 @@ function Calendar() {
                         <span
                           className={`text-xs px-2 py-1 rounded-full ${
                             event.type === "assignment"
-                              ? "bg-indigo-100 text-indigo-800"
+                              ? "bg-primary-100 text-primary-800"
                               : event.type === "exam"
                                 ? "bg-red-100 text-red-800"
                                 : "bg-green-100 text-green-800"

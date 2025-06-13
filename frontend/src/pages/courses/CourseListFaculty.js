@@ -50,7 +50,7 @@ function CourseListFaculty() {
     <div className="container mx-auto px-4 py-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
         <h1 className="text-3xl font-bold text-gray-800">My Courses</h1>
-        <button className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 mt-4 md:mt-0">
+        <button className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark mt-4 md:mt-0">
           Create New Course
         </button>
       </div>
@@ -79,7 +79,7 @@ function CourseListFaculty() {
                     <div className="mt-4 md:mt-0">
                       <div className="w-full md:w-32 bg-gray-200 rounded-full h-2.5">
                         <div
-                          className="bg-indigo-600 h-2.5 rounded-full"
+                          className="bg-primary h-2.5 rounded-full"
                           style={{ width: `${course.progress}%` }}
                         ></div>
                       </div>
@@ -120,7 +120,7 @@ function CourseListFaculty() {
                   <p className="text-sm font-medium text-gray-500">Progress</p>
                   <div className="w-full bg-gray-200 rounded-full h-2.5 mt-2">
                     <div
-                      className="bg-indigo-600 h-2.5 rounded-full"
+                      className="bg-primary h-2.5 rounded-full"
                       style={{ width: `${selectedCourse.progress}%` }}
                     ></div>
                   </div>
@@ -129,16 +129,16 @@ function CourseListFaculty() {
               </div>
 
               <div className="mt-6 space-y-3">
-                <button className="w-full px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+                <button className="w-full px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark">
                   Manage Course
                 </button>
-                <button className="w-full px-4 py-2 border border-indigo-600 text-indigo-600 rounded-md hover:bg-indigo-50">
+                <button className="w-full px-4 py-2 border border-primary text-primary rounded-md hover:bg-primary-50">
                   View Student List
                 </button>
-                <button className="w-full px-4 py-2 border border-indigo-600 text-indigo-600 rounded-md hover:bg-indigo-50">
+                <button className="w-full px-4 py-2 border border-primary text-primary rounded-md hover:bg-primary-50">
                   Create Assignment
                 </button>
-                <button className="w-full px-4 py-2 border border-indigo-600 text-indigo-600 rounded-md hover:bg-indigo-50">
+                <button className="w-full px-4 py-2 border border-primary text-primary rounded-md hover:bg-primary-50">
                   Create Quiz
                 </button>
               </div>
