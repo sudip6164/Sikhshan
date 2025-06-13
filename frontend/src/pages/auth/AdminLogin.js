@@ -3,6 +3,7 @@
 import React, { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from "../../contexts/AuthContext"
+import logo from "../../assets/images/logo.png"
 
 function AdminLogin() {
   const [email, setEmail] = useState("")
@@ -44,12 +45,15 @@ function AdminLogin() {
       <div className="w-full md:w-1/2 flex items-center justify-center p-8">
         <div className="max-w-md w-full space-y-8">
           <div>
-            <h1 className="text-4xl font-extrabold text-center">
-              <span className="text-primary">Academi</span>
-              <span className="text-dark">X</span>
-            </h1>
-            <h2 className="mt-6 text-center text-3xl font-bold text-gray-900">Admin Login</h2>
-            <p className="mt-2 text-center text-sm text-gray-600">Administrative Access Portal</p>
+            <div className="flex flex-col items-center">
+              <img
+                src={logo}
+                alt="Sikhshan Logo"
+                className="h-48 w-auto mb-2 object-contain"
+              />
+              <h2 className="text-3xl font-bold text-gray-900">Admin Login</h2>
+              <p className="mt-1 text-sm text-gray-600">Administrative Access Portal</p>
+            </div>
           </div>
 
           {error && (

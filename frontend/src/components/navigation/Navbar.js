@@ -48,7 +48,7 @@ function Navbar() {
                 <img
                   src={logo}
                   alt="Sikhshan Logo"
-                  className="h-20 w-auto sm:h-24 object-contain -my-2"
+                  className="h-12 w-auto sm:h-16 object-contain -my-2"
                 />
               </Link>
             </div>
