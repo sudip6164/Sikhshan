@@ -24,8 +24,8 @@ function Sidebar() {
       return [
         { name: "Dashboard", path: "/faculty", icon: "dashboard" },
         { name: "Courses", path: "/faculty/courses", icon: "book" },
-        { name: "Create Assignment", path: "/faculty/assignments/create", icon: "assignment" },
-        { name: "Create Quiz", path: "/faculty/quizzes/create", icon: "quiz" },
+        { name: "Assignments", path: "/faculty/assignments", icon: "assignment" },
+        { name: "Quizzes", path: "/faculty/quizzes", icon: "quiz" },
         ...commonItems,
       ]
     } else if (role === "student") {
