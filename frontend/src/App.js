@@ -42,6 +42,12 @@ import AllNotifications from "./pages/notifications/AllNotifications"
 
 // Auth Context
 import { AuthProvider } from "./contexts/AuthContext"
+import UserManagement from "./pages/admin/UserManagement"
+import SystemSettings from "./pages/admin/SystemSettings"
+import Reports from "./pages/admin/Reports"
+import AuditLogs from "./pages/admin/AuditLogs"
+import AddUser from "./pages/admin/AddUser"
+import EditUser from "./pages/admin/EditUser"
 
 function App() {
   return (
@@ -56,7 +62,12 @@ function App() {
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLayout />}>
             <Route path="dashboard" element={<SuperadminDashboard />} />
-            {/* Add more admin routes here */}
+            <Route path="users" element={<UserManagement />} />
+            <Route path="users/add" element={<AddUser />} />
+            <Route path="users/edit/:userId" element={<EditUser />} />
+            <Route path="settings" element={<SystemSettings />} />
+            <Route path="reports" element={<Reports />} />
+            <Route path="logs" element={<AuditLogs />} />
           </Route>
 
           {/* Protected Routes */}
