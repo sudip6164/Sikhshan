@@ -80,8 +80,8 @@ function FacultyDashboard() {
               View All Courses
             </Link>
             <Link
-              to="/faculty/assignments/create"
-              className="px-4 py-2 bg-primary-dark text-white rounded-md hover:bg-primary-dark/90 transition-colors duration-200"
+              to="/faculty/assignments"
+              className="px-4 py-2 bg-white text-primary rounded-md hover:bg-gray-100 transition-colors duration-200"
             >
               Create Assignment
             </Link>
