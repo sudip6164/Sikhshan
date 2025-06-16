@@ -64,7 +64,7 @@ function FacultyDashboard() {
 
   return (
     <div className="container mx-auto px-4 py-6">
-      <div className="bg-gradient-to-r from-primary to-primary-dark text-white rounded-xl shadow-lg p-6 mb-8">
+      <div className="bg-primary text-white rounded-xl shadow-lg p-6 mb-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
           <div>
             <h1 className="text-3xl font-bold mb-2">
@@ -80,8 +80,8 @@ function FacultyDashboard() {
               View All Courses
             </Link>
             <Link
-              to="/faculty/assignments/create"
-              className="px-4 py-2 bg-primary-dark text-white rounded-md hover:bg-primary-dark/90 transition-colors duration-200"
+              to="/faculty/assignments"
+              className="px-4 py-2 bg-white text-primary rounded-md hover:bg-gray-100 transition-colors duration-200"
             >
               Create Assignment
             </Link>
