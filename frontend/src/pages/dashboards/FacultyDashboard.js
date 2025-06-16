@@ -64,7 +64,7 @@ function FacultyDashboard() {
 
   return (
     <div className="container mx-auto px-4 py-6">
-      <div className="bg-gradient-to-r from-primary to-primary-dark text-white rounded-xl shadow-lg p-6 mb-8">
+      <div className="bg-primary text-white rounded-xl shadow-lg p-6 mb-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
           <div>
             <h1 className="text-3xl font-bold mb-2">

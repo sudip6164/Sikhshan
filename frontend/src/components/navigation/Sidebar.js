@@ -3,6 +3,16 @@ import { Link, useLocation } from "react-router-dom"
 import { useAuth } from "../../contexts/AuthContext"
 import { useState } from "react"
 import logo from "../../assets/images/logo.png"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import {
+  faChartLine,
+  faBook,
+  faFileAlt,
+  faQuestionCircle,
+  faComments,
+  faCalendarAlt,
+  faShieldAlt
+} from "@fortawesome/free-solid-svg-icons"
 
 function Sidebar() {
   const { currentUser } = useAuth()
@@ -44,19 +54,19 @@ function Sidebar() {
 
   const navItems = getNavItems()
 
-  // Simple icon component (using text as placeholder)
+  // Simple icon component (using Font Awesome icons)
   const Icon = ({ name }) => {
     const iconMap = {
-      dashboard: "📊",
-      book: "📚",
-      assignment: "📝",
-      quiz: "❓",
-      chat: "💬",
-      calendar: "📅",
-      security: "🔒",
+      dashboard: faChartLine,
+      book: faBook,
+      assignment: faFileAlt,
+      quiz: faQuestionCircle,
+      chat: faComments,
+      calendar: faCalendarAlt,
+      security: faShieldAlt,
     }
 
-    return <span className="mr-3">{iconMap[name] || "📄"}</span>
+    return <FontAwesomeIcon icon={iconMap[name] || faFileAlt} className="mr-3 w-5 h-5" />
   }
 
   return (
