@@ -13,7 +13,11 @@ import {
   faCalendarAlt,
   faShieldAlt,
   faBars,
-  faTimes
+  faTimes,
+  faUsers,
+  faCog,
+  faChartBar,
+  faHistory
 } from "@fortawesome/free-solid-svg-icons"
 
 function Sidebar() {
@@ -31,7 +35,14 @@ function Sidebar() {
     ]
 
     if (role === "superadmin") {
-      return [{ name: "Dashboard", path: "/superadmin", icon: "dashboard" }, ...commonItems]
+      return [
+        { name: "Dashboard", path: "/admin/dashboard", icon: "dashboard" },
+        { name: "User Management", path: "/admin/users", icon: "users" },
+        { name: "System Settings", path: "/admin/settings", icon: "settings" },
+        { name: "Reports", path: "/admin/reports", icon: "reports" },
+        { name: "Audit Logs", path: "/admin/logs", icon: "logs" },
+        ...commonItems,
+      ]
     } else if (role === "faculty") {
       return [
         { name: "Dashboard", path: "/faculty", icon: "dashboard" },
@@ -66,6 +77,10 @@ function Sidebar() {
       chat: faComments,
       calendar: faCalendarAlt,
       security: faShieldAlt,
+      users: faUsers,
+      settings: faCog,
+      reports: faChartBar,
+      logs: faHistory,
     }
 
     return <FontAwesomeIcon icon={iconMap[name] || faFileAlt} className="mr-3 w-5 h-5" />
