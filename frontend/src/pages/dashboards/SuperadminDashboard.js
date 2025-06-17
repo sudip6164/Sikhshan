@@ -124,10 +124,10 @@ function SuperadminDashboard() {
 
   return (
     <div className="h-full">
-      <div className="bg-gradient-to-r from-dark to-dark-light text-white rounded-xl shadow-lg p-6 mb-8">
+      <div className="bg-primary text-white rounded-xl shadow-lg p-6 mb-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
           <div>
-            <h1 className="text-3xl font-bold mb-2 text-primary">
+            <h1 className="text-3xl font-bold mb-2">
               {greeting}, {currentUser.name}
             </h1>
             <p className="text-white text-opacity-90">Welcome to your system overview</p>
@@ -135,13 +135,13 @@ function SuperadminDashboard() {
           <div className="mt-4 md:mt-0 flex space-x-3">
             <button
               onClick={() => setIsSystemStatusOpen(true)}
-              className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors duration-200"
+              className="px-4 py-2 bg-white text-primary rounded-md hover:bg-gray-100 transition-colors duration-200"
             >
               System Status
             </button>
             <button
               onClick={() => setIsGenerateReportOpen(true)}
-              className="px-4 py-2 bg-white text-dark rounded-md hover:bg-gray-100 transition-colors duration-200"
+              className="px-4 py-2 bg-white text-primary rounded-md hover:bg-gray-100 transition-colors duration-200"
             >
               Generate Reports
             </button>
