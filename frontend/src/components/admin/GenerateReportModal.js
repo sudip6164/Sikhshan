@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
   faTimesCircle,
   faDownload,
-  faCalendarAlt,
   faFileAlt,
   faUsers,
   faChartBar,

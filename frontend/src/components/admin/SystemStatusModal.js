@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
   faServer,
@@ -13,7 +13,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons"
 
 function SystemStatusModal({ isOpen, onClose }) {
-  const [systemStatus, setSystemStatus] = useState({
+  const [systemStatus] = useState({
     server: { status: "operational", uptime: "99.9%", responseTime: "45ms" },
     database: { status: "operational", connections: 156, queriesPerSecond: 120 },
     network: { status: "operational", bandwidth: "1.2 Gbps", latency: "25ms" },

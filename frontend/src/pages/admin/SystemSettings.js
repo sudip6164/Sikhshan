@@ -1,21 +1,16 @@
 "use client"
 
 import { useState } from "react"
-import { useAuth } from "../../contexts/AuthContext"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
   faCog,
   faSave,
-  faServer,
   faShieldAlt,
   faBell,
-  faEnvelope,
   faDatabase,
-  faUserShield,
 } from "@fortawesome/free-solid-svg-icons"
 
 function SystemSettings() {
-  const { currentUser } = useAuth()
   const [settings, setSettings] = useState({
     systemName: "Sikhshan LMS",
     emailNotifications: true,

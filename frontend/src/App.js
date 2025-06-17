@@ -30,7 +30,6 @@ import CompletedAssignmentView from "./pages/assignments/CompletedAssignmentView
 import AssignmentListFaculty from "./pages/assignments/AssignmentListFaculty"
 
 // Quiz Pages
-import QuizCreation from "./pages/quizzes/QuizCreation"
 import QuizAttempt from "./pages/quizzes/QuizAttempt"
 import QuizListFaculty from "./pages/quizzes/QuizListFaculty"
 

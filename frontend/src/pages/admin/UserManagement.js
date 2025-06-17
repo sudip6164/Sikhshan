@@ -2,22 +2,15 @@
 
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import { useAuth } from "../../contexts/AuthContext"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
   faSearch,
-  faFilter,
   faPlus,
-  faEdit,
-  faTrash,
   faUser,
-  faGraduationCap,
-  faChalkboardTeacher,
 } from "@fortawesome/free-solid-svg-icons"
 
 function UserManagement() {
   const navigate = useNavigate()
-  const { currentUser } = useAuth()
   const [users, setUsers] = useState([])
   const [filteredUsers, setFilteredUsers] = useState([])
   const [searchQuery, setSearchQuery] = useState("")
@@ -99,17 +92,6 @@ function UserManagement() {
       } catch (error) {
         setError("Failed to delete user. Please try again.")
       }
-    }
-  }
-
-  const getRoleIcon = (role) => {
-    switch (role) {
-      case "faculty":
-        return faChalkboardTeacher
-      case "student":
-        return faGraduationCap
-      default:
-        return faUser
     }
   }
 

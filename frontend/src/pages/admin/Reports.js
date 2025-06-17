@@ -1,19 +1,14 @@
 "use client"
 
 import { useState } from "react"
-import { useAuth } from "../../contexts/AuthContext"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
   faDownload,
   faChartBar,
-  faCalendarAlt,
-  faFilter,
   faFileExport,
 } from "@fortawesome/free-solid-svg-icons"
 
 function Reports() {
-  const { currentUser } = useAuth()
-  const [selectedReport, setSelectedReport] = useState("")
   const [dateRange, setDateRange] = useState({
     start: "",
     end: "",
