@@ -1,23 +1,17 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useAuth } from "../../contexts/AuthContext"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
-  faHistory,
   faSearch,
-  faFilter,
   faDownload,
   faUser,
-  faCalendarAlt,
   faExclamationTriangle,
   faInfoCircle,
   faCheckCircle,
-  faTimesCircle,
 } from "@fortawesome/free-solid-svg-icons"
 
 function AuditLogs() {
-  const { currentUser } = useAuth()
   const [logs, setLogs] = useState([])
   const [filteredLogs, setFilteredLogs] = useState([])
   const [searchQuery, setSearchQuery] = useState("")

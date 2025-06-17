@@ -18,16 +18,17 @@ function AdminLayout() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="flex h-screen bg-gray-100">
+      {/* Sidebar */}
       <Sidebar />
-      
+
       {/* Main Content */}
-      <div className="ml-64">
+      <div className="flex flex-col flex-1 overflow-hidden">
         {/* Admin Header */}
-        <header className="bg-white shadow">
-          <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <header className="bg-white shadow sticky top-0 z-10">
+          <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center">
-              <h1 className="text-3xl font-bold text-gray-900">
+              <h1 className="text-2xl font-bold text-gray-900">
                 <span className="text-primary">Admin</span> Dashboard
               </h1>
               <div className="flex items-center space-x-4">
@@ -44,7 +45,7 @@ function AdminLayout() {
         </header>
 
         {/* Admin Content */}
-        <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <main className="flex-1 overflow-y-auto p-4 md:p-6">
           <Outlet />
         </main>
       </div>
