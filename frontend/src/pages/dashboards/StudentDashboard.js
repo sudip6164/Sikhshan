@@ -253,7 +253,7 @@ function StudentDashboard() {
                     </p>
                   </div>
                   <span
-                    className={`text-xs px-2 py-1 rounded-full ${
+                    className={`text-xs px-2 py-1 rounded-full flex items-center justify-center ${
                       assignment.status === "Not Started"
                         ? "bg-red-100 text-red-800"
                         : assignment.status === "In Progress"
