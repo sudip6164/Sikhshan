@@ -29,9 +29,21 @@ function Sidebar() {
   const getNavItems = () => {
     const role = currentUser?.role
 
+    let chatPath = "/chat"
+    let calendarPath = "/calendar"
+    if (role === "superadmin") {
+      chatPath = "/admin/chat"
+      calendarPath = "/admin/calendar"
+    } else if (role === "faculty") {
+      chatPath = "/faculty/chat"
+      calendarPath = "/faculty/calendar"
+    } else if (role === "student") {
+      chatPath = "/student/chat"
+      calendarPath = "/student/calendar"
+    }
     const commonItems = [
-      { name: "Chat", path: "/chat", icon: "chat" },
-      { name: "Calendar", path: "/calendar", icon: "calendar" },
+      { name: "Chat", path: chatPath, icon: "chat" },
+      { name: "Calendar", path: calendarPath, icon: "calendar" },
     ]
 
     if (role === "superadmin") {

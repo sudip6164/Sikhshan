@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "../contexts/AuthContext"
-import Sidebar from "./Sidebar"
+import Sidebar from "./navigation/Sidebar"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
   faBell,

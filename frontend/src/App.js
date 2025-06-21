@@ -80,6 +80,8 @@ function App() {
             <Route path="settings" element={<SystemSettings />} />
             <Route path="reports" element={<Reports />} />
             <Route path="logs" element={<AuditLogs />} />
+            <Route path="chat" element={<Chat />} />
+            <Route path="calendar" element={<Calendar />} />
           </Route>
 
           {/* Faculty Routes (faculty only) */}
@@ -93,6 +95,8 @@ function App() {
             <Route path="assignments/create" element={<AssignmentCreation />} />
             <Route path="assignments" element={<AssignmentListFaculty />} />
             <Route path="quizzes" element={<QuizListFaculty />} />
+            <Route path="chat" element={<Chat />} />
+            <Route path="calendar" element={<Calendar />} />
           </Route>
 
           {/* Student Routes (student only) */}
@@ -112,11 +116,13 @@ function App() {
             <Route path="profile" element={<StudentProfile />} />
             <Route path="notifications" element={<AllNotifications />} />
             <Route path="plagiarism" element={<PlagiarismResults />} />
+            <Route path="chat" element={<Chat />} />
+            <Route path="calendar" element={<Calendar />} />
           </Route>
 
           {/* Common Routes (all roles) */}
-          <Route path="/chat" element={<Chat />} />
-          <Route path="/calendar" element={<Calendar />} />
+          {/* <Route path="/chat" element={<Chat />} />
+          <Route path="/calendar" element={<Calendar />} /> */}
 
           {/* Default redirect */}
           <Route path="/" element={<Navigate to="/login" replace />} />
