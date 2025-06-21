@@ -48,6 +48,8 @@ import AuditLogs from "./pages/admin/AuditLogs"
 import AddUser from "./pages/admin/AddUser"
 import EditUser from "./pages/admin/EditUser"
 import Settings from "./pages/Settings"
+import ProtectedRoute from "./components/ProtectedRoute"
+import Unauthorized from "./pages/Unauthorized"
 
 function App() {
   return (
@@ -62,8 +64,15 @@ function App() {
           {/* User Settings Route (top-level) */}
           <Route path="/settings" element={<Settings />} />
 
-          {/* Admin Routes */}
-          <Route path="/admin" element={<AdminLayout />}>
+          {/* Unauthorized Route */}
+          <Route path="/unauthorized" element={<Unauthorized />} />
+
+          {/* Admin Routes (superadmin only) */}
+          <Route path="/admin" element={
+            <ProtectedRoute allowedRoles={["superadmin"]}>
+              <AdminLayout />
+            </ProtectedRoute>
+          }>
             <Route path="dashboard" element={<SuperadminDashboard />} />
             <Route path="users" element={<UserManagement />} />
             <Route path="users/add" element={<AddUser />} />
@@ -73,35 +82,44 @@ function App() {
             <Route path="logs" element={<AuditLogs />} />
           </Route>
 
-          {/* Protected Routes */}
-          <Route path="/" element={<MainLayout />}>
-            {/* Faculty Routes */}
-            <Route path="faculty" element={<FacultyDashboard />} />
-            <Route path="faculty/courses" element={<CourseListFaculty />} />
-            <Route path="faculty/assignments/create" element={<AssignmentCreation />} />
-            <Route path="faculty/assignments" element={<AssignmentListFaculty />} />
-            <Route path="faculty/quizzes" element={<QuizListFaculty />} />
-
-            {/* Student Routes */}
-            <Route path="student" element={<StudentDashboard />} />
-            <Route path="student/courses" element={<CourseListStudent />} />
-            <Route path="student/courses/:courseId" element={<ViewCourse />} />
-            <Route path="student/assignments/submit" element={<AssignmentSubmission />} />
-            <Route path="student/assignments/:id/submit" element={<AssignmentView />} />
-            <Route path="student/assignments/:id/view" element={<CompletedAssignmentView />} />
-            <Route path="student/quizzes/attempt" element={<QuizAttempt />} />
-            <Route path="student/quizzes/:id/view" element={<QuizAttempt />} />
-            <Route path="student/profile" element={<StudentProfile />} />
-            <Route path="student/notifications" element={<AllNotifications />} />
-            <Route path="student/plagiarism" element={<PlagiarismResults />} />
-
-            {/* Common Routes */}
-            <Route path="chat" element={<Chat />} />
-            <Route path="calendar" element={<Calendar />} />
-
-            {/* Default redirect */}
-            <Route path="/" element={<Navigate to="/login" replace />} />
+          {/* Faculty Routes (faculty only) */}
+          <Route path="/faculty" element={
+            <ProtectedRoute allowedRoles={["faculty"]}>
+              <MainLayout />
+            </ProtectedRoute>
+          }>
+            <Route index element={<FacultyDashboard />} />
+            <Route path="courses" element={<CourseListFaculty />} />
+            <Route path="assignments/create" element={<AssignmentCreation />} />
+            <Route path="assignments" element={<AssignmentListFaculty />} />
+            <Route path="quizzes" element={<QuizListFaculty />} />
           </Route>
+
+          {/* Student Routes (student only) */}
+          <Route path="/student" element={
+            <ProtectedRoute allowedRoles={["student"]}>
+              <MainLayout />
+            </ProtectedRoute>
+          }>
+            <Route index element={<StudentDashboard />} />
+            <Route path="courses" element={<CourseListStudent />} />
+            <Route path="courses/:courseId" element={<ViewCourse />} />
+            <Route path="assignments/submit" element={<AssignmentSubmission />} />
+            <Route path="assignments/:id/submit" element={<AssignmentView />} />
+            <Route path="assignments/:id/view" element={<CompletedAssignmentView />} />
+            <Route path="quizzes/attempt" element={<QuizAttempt />} />
+            <Route path="quizzes/:id/view" element={<QuizAttempt />} />
+            <Route path="profile" element={<StudentProfile />} />
+            <Route path="notifications" element={<AllNotifications />} />
+            <Route path="plagiarism" element={<PlagiarismResults />} />
+          </Route>
+
+          {/* Common Routes (all roles) */}
+          <Route path="/chat" element={<Chat />} />
+          <Route path="/calendar" element={<Calendar />} />
+
+          {/* Default redirect */}
+          <Route path="/" element={<Navigate to="/login" replace />} />
         </Routes>
       </Router>
     </AuthProvider>
