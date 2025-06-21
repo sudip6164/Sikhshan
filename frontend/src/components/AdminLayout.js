@@ -7,7 +7,6 @@ import Sidebar from "./Sidebar"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
   faBell,
-  faEnvelope,
   faCalendarAlt,
   faComments,
   faSignOutAlt,

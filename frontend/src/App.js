@@ -47,6 +47,7 @@ import Reports from "./pages/admin/Reports"
 import AuditLogs from "./pages/admin/AuditLogs"
 import AddUser from "./pages/admin/AddUser"
 import EditUser from "./pages/admin/EditUser"
+import Settings from "./pages/Settings"
 
 function App() {
   return (
@@ -57,6 +58,9 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/reset-password" element={<PasswordReset />} />
+
+          {/* User Settings Route (top-level) */}
+          <Route path="/settings" element={<Settings />} />
 
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLayout />}>
