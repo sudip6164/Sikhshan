@@ -36,6 +36,7 @@ import QuizAttempt from "./pages/quizzes/QuizAttempt"
 import QuizListFaculty from "./pages/quizzes/QuizListFaculty"
 import FacultyQuizView from "./pages/quizzes/FacultyQuizView"
 import FacultyQuizGrade from "./pages/quizzes/FacultyQuizGrade"
+import QuizCreation from "./pages/quizzes/QuizCreation"
 
 // Other Pages
 import Chat from "./pages/communication/Chat"
@@ -101,6 +102,7 @@ function App() {
             <Route path="assignments/:id/view" element={<FacultyAssignmentView />} />
             <Route path="assignments/:assignmentId/grade/:submissionId" element={<FacultyAssignmentGrade />} />
             <Route path="quizzes" element={<QuizListFaculty />} />
+            <Route path="quizzes/create" element={<QuizCreation />} />
             <Route path="quizzes/:id/view" element={<FacultyQuizView />} />
             <Route path="quizzes/:quizId/grade/:submissionId" element={<FacultyQuizGrade />} />
             <Route path="chat" element={<Chat />} />
