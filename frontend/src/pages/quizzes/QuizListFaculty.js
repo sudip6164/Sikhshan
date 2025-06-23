@@ -648,10 +648,10 @@ function QuizListFaculty() {
                     Delete Quiz
                   </button>
                   <Link
-                    to={`/faculty/quizzes/${selectedQuiz.id}/submissions`}
+                    to={`/faculty/quizzes/${selectedQuiz.id}/view`}
                     className="block w-full px-4 py-2 border border-primary text-primary text-center rounded-md hover:bg-primary-50"
                   >
-                    View Submissions
+                    View Quiz
                   </Link>
                 </div>
               </div>

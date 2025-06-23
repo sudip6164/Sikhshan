@@ -28,10 +28,14 @@ import AssignmentSubmission from "./pages/assignments/AssignmentSubmission"
 import AssignmentView from "./pages/assignments/AssignmentView"
 import CompletedAssignmentView from "./pages/assignments/CompletedAssignmentView"
 import AssignmentListFaculty from "./pages/assignments/AssignmentListFaculty"
+import FacultyAssignmentView from "./pages/assignments/FacultyAssignmentView"
+import FacultyAssignmentGrade from "./pages/assignments/FacultyAssignmentGrade"
 
 // Quiz Pages
 import QuizAttempt from "./pages/quizzes/QuizAttempt"
 import QuizListFaculty from "./pages/quizzes/QuizListFaculty"
+import FacultyQuizView from "./pages/quizzes/FacultyQuizView"
+import FacultyQuizGrade from "./pages/quizzes/FacultyQuizGrade"
 
 // Other Pages
 import Chat from "./pages/communication/Chat"
@@ -94,7 +98,11 @@ function App() {
             <Route path="courses" element={<CourseListFaculty />} />
             <Route path="assignments/create" element={<AssignmentCreation />} />
             <Route path="assignments" element={<AssignmentListFaculty />} />
+            <Route path="assignments/:id/view" element={<FacultyAssignmentView />} />
+            <Route path="assignments/:assignmentId/grade/:submissionId" element={<FacultyAssignmentGrade />} />
             <Route path="quizzes" element={<QuizListFaculty />} />
+            <Route path="quizzes/:id/view" element={<FacultyQuizView />} />
+            <Route path="quizzes/:quizId/grade/:submissionId" element={<FacultyQuizGrade />} />
             <Route path="chat" element={<Chat />} />
             <Route path="calendar" element={<Calendar />} />
           </Route>

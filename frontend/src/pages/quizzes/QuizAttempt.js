@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useMemo } from "react"
 import { useAuth } from "../../contexts/AuthContext"
 import { useParams, useNavigate } from "react-router-dom"
+import GradingFeedback from '../../components/GradingFeedback'
 
 function QuizAttempt() {
   const { currentUser } = useAuth()
@@ -155,6 +156,16 @@ function QuizAttempt() {
       <h1 className="text-3xl font-bold text-gray-800 mb-6">
         {isViewMode ? "View Quiz" : "Take Quiz"}
       </h1>
+
+      {/* Show grade and feedback after quiz is submitted */}
+      {quizSubmitted && (
+        <GradingFeedback
+          isFaculty={false}
+          grade={18}
+          feedback={'Well done!'}
+          isGraded={true}
+        />
+      )}
 
       {!selectedQuiz ? (
         <div className="bg-white rounded-lg shadow p-6">
