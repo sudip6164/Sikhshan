@@ -1,16 +1,19 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
   faSearch,
   faPlus,
   faUser,
+  faEye,
+  faTimes
 } from "@fortawesome/free-solid-svg-icons"
 
 function UserManagement() {
   const navigate = useNavigate()
+  const location = useLocation()
   const [users, setUsers] = useState([])
   const [filteredUsers, setFilteredUsers] = useState([])
   const [searchQuery, setSearchQuery] = useState("")
@@ -18,6 +21,8 @@ function UserManagement() {
   const [selectedStatus, setSelectedStatus] = useState("all")
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
+  const [viewUser, setViewUser] = useState(null)
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -83,12 +88,22 @@ function UserManagement() {
     setFilteredUsers(filtered)
   }, [searchQuery, selectedRole, selectedStatus, users])
 
+  useEffect(() => {
+    if (location.state && location.state.success) {
+      setSuccess(location.state.success)
+      // Clear the state so the message doesn't persist on refresh
+      navigate(location.pathname, { replace: true, state: {} })
+    }
+  }, [location, navigate])
+
   const handleDeleteUser = async (userId) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
       try {
         // Simulate API call
         await new Promise((resolve) => setTimeout(resolve, 1000))
         setUsers(users.filter((user) => user.id !== userId))
+        setSuccess("User deleted successfully.")
+        setTimeout(() => setSuccess("") , 3000)
       } catch (error) {
         setError("Failed to delete user. Please try again.")
       }
@@ -107,14 +122,26 @@ function UserManagement() {
     <div className="container mx-auto px-4 py-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-gray-900">User Management</h1>
-          <button
+        <button
           onClick={() => navigate("/admin/users/add")}
-            className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors duration-200 flex items-center"
-          >
-            <FontAwesomeIcon icon={faPlus} className="mr-2" />
-            Add User
-          </button>
+          className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors duration-200 flex items-center"
+        >
+          <FontAwesomeIcon icon={faPlus} className="mr-2" />
+          Add User
+        </button>
+      </div>
+
+      {/* Feedback Messages */}
+      {success && (
+        <div className="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-md">
+          {success}
         </div>
+      )}
+      {error && (
+        <div className="mb-4 bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md">
+          {error}
+        </div>
+      )}
 
       {/* Search and Filters */}
       <div className="bg-white rounded-xl shadow-md p-4 sm:p-6 mb-6">
@@ -230,6 +257,13 @@ function UserManagement() {
                   <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex space-x-2">
                       <button
+                        onClick={() => setViewUser(user)}
+                        className="text-blue-600 hover:text-blue-900 flex items-center"
+                        title="View User"
+                      >
+                        <FontAwesomeIcon icon={faEye} className="mr-1" /> View
+                      </button>
+                      <button
                         onClick={() => navigate(`/admin/users/edit/${user.id}`)}
                         className="text-primary hover:text-primary-dark"
                       >
@@ -250,9 +284,35 @@ function UserManagement() {
         </div>
       </div>
 
-      {error && (
-        <div className="mt-4 bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md">
-          {error}
+      {/* User Details Modal */}
+      {viewUser && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 relative animate-fade-in">
+            <button
+              className="absolute top-3 right-3 text-gray-400 hover:text-gray-600"
+              onClick={() => setViewUser(null)}
+              title="Close"
+            >
+              <FontAwesomeIcon icon={faTimes} className="h-5 w-5" />
+            </button>
+            <div className="flex flex-col items-center mb-4">
+              <div className="h-16 w-16 rounded-full bg-primary text-white flex items-center justify-center mb-2">
+                <FontAwesomeIcon icon={faUser} className="h-7 w-7" />
+              </div>
+              <h2 className="text-xl font-bold text-gray-900 mb-1">{viewUser.name}</h2>
+              <p className="text-gray-500 mb-2">{viewUser.email}</p>
+              <span className="px-2 py-1 rounded-full text-xs font-semibold bg-primary bg-opacity-10 text-primary mb-2">
+                {viewUser.role}
+              </span>
+              <span className={`px-2 py-1 rounded-full text-xs font-semibold ${viewUser.status === "active" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
+                {viewUser.status}
+              </span>
+            </div>
+            <div className="space-y-2">
+              <div><span className="font-medium text-gray-700">User ID:</span> {viewUser.id}</div>
+              {/* Add more user details here if available */}
+            </div>
+          </div>
         </div>
       )}
     </div>

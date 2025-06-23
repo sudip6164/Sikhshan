@@ -199,10 +199,9 @@ function StudentDashboard() {
             <div className="h-40 bg-cover bg-center" style={{ backgroundImage: `url(${course.image})` }}>
               <div className="h-full w-full bg-black bg-opacity-30 flex items-end p-4">
                 <div>
-                  <span className="inline-block bg-primary text-white text-xs px-2 py-1 rounded-md mb-2">
-                    {course.code}
-                  </span>
-                  <h3 className="text-lg font-bold text-white">{course.name}</h3>
+                  <h3 className="text-lg font-bold text-white mb-1">{course.name}</h3>
+                  <p className="text-sm text-white text-opacity-80">{course.code}</p>
+                  <p className="text-sm text-white mt-2">Total Grade: <span className="font-semibold">{course.progress}%</span></p>
                 </div>
               </div>
             </div>

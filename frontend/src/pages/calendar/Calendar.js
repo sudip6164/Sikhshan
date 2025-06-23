@@ -186,7 +186,7 @@ function Calendar() {
   // Calendar days
   const calendarDays = generateCalendarDays()
 
-  return (
+  const calendarContent = (
     <div className="container mx-auto px-4 py-6">
       <h1 className="text-3xl font-bold text-gray-800 mb-6">Academic Calendar</h1>
 
@@ -399,6 +399,9 @@ function Calendar() {
       </div>
     </div>
   )
+
+  if (!currentUser) return null
+  return calendarContent
 }
 
 export default Calendar

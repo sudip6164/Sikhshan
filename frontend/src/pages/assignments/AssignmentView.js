@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import GradingFeedback from '../../components/GradingFeedback';
 
 // Mock data for a single assignment
 const mockAssignment = {
@@ -214,6 +215,16 @@ function AssignmentView() {
                   ))}
                 </div>
               </div>
+            )}
+
+            {/* Grade and Feedback */}
+            {assignment.submittedMarks !== undefined && assignment.submission && (
+              <GradingFeedback
+                isFaculty={false}
+                grade={assignment.submittedMarks}
+                feedback={assignment.submission.feedback}
+                isGraded={true}
+              />
             )}
 
             {/* Submission Form */}

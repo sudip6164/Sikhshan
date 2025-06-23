@@ -2,6 +2,7 @@
 
 import React, { useState } from "react"
 import { useAuth } from "../../contexts/AuthContext"
+import { Link } from "react-router-dom"
 
 // Mock data
 const courses = [
@@ -294,12 +295,12 @@ function CourseListFaculty() {
                   <button className="w-full px-4 py-2 border border-primary text-primary rounded-md hover:bg-primary-50">
                     View Student List
                   </button>
-                  <button className="w-full px-4 py-2 border border-primary text-primary rounded-md hover:bg-primary-50">
+                  <Link to="/faculty/assignments/create" className="w-full px-4 py-2 border border-primary text-primary rounded-md hover:bg-primary-50 block text-center">
                     Create Assignment
-                  </button>
-                  <button className="w-full px-4 py-2 border border-primary text-primary rounded-md hover:bg-primary-50">
+                  </Link>
+                  <Link to="/faculty/quizzes/create" className="w-full px-4 py-2 border border-primary text-primary rounded-md hover:bg-primary-50 block text-center">
                     Create Quiz
-                  </button>
+                  </Link>
                 </div>
               </div>
             ) : (

@@ -14,7 +14,9 @@ function StudentProfile() {
     gender: currentUser?.gender || "",
     dateOfBirth: currentUser?.dateOfBirth || "",
   })
-  
+  const [showMessage, setShowMessage] = useState("")
+  const [showError, setShowError] = useState("")
+
   const handleImageChange = (e) => {
     const file = e.target.files[0]
     if (file) {
@@ -31,8 +33,9 @@ function StudentProfile() {
   }
 
   const handleSave = () => {
-    // Here you would typically make an API call to update the profile
     setIsEditing(false)
+    setShowMessage("Profile updated successfully!")
+    setTimeout(() => setShowMessage("") , 3000)
   }
 
   const handleCancel = () => {
@@ -57,15 +60,19 @@ function StudentProfile() {
 
   const renderProfileSection = () => (
     <div className="max-w-2xl mx-auto bg-white rounded-lg shadow p-8">
+      {showMessage && <div className="mb-4 p-2 bg-green-100 text-green-800 rounded">{showMessage}</div>}
+      {showError && <div className="mb-4 p-2 bg-red-100 text-red-800 rounded">{showError}</div>}
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-gray-900">Profile Information</h2>
         {!isEditing ? (
-          <button
-            onClick={handleEdit}
-            className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors duration-200"
-          >
-            Edit Profile
-          </button>
+          <div className="flex space-x-2">
+            <button
+              onClick={handleEdit}
+              className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors duration-200"
+            >
+              Edit Profile
+            </button>
+          </div>
         ) : (
           <div className="flex space-x-2">
             <button
@@ -84,7 +91,6 @@ function StudentProfile() {
         )}
       </div>
 
-      {/* Profile Image Section */}
       <div className="flex flex-col items-center mb-6">
         <div className="relative">
           {previewImage ? (

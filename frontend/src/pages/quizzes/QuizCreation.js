@@ -2,9 +2,11 @@
 
 import { useState } from "react"
 import { useAuth } from "../../contexts/AuthContext"
+import { useNavigate } from "react-router-dom"
 
 function QuizCreation() {
   const { currentUser } = useAuth()
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     title: "",
     course: "",
@@ -156,6 +158,13 @@ function QuizCreation() {
 
   return (
     <div className="container mx-auto px-4 py-6">
+      <button
+        type="button"
+        onClick={() => navigate('/faculty/quizzes')}
+        className="mb-4 px-4 py-2 border border-primary text-primary rounded-md hover:bg-primary-50"
+      >
+        Go Back
+      </button>
       <h1 className="text-3xl font-bold text-gray-800 mb-6">Create Quiz</h1>
 
       <div className="bg-white rounded-lg shadow p-6">

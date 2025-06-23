@@ -66,7 +66,7 @@ function EditUser() {
       await new Promise((resolve) => setTimeout(resolve, 1000))
       
       // Mock success
-      navigate("/admin/dashboard")
+      navigate("/admin/users", { state: { success: "User updated successfully." } })
     } catch (error) {
       setError("Failed to update user. Please try again.")
     } finally {
@@ -87,7 +87,7 @@ function EditUser() {
       <div className="max-w-2xl mx-auto">
         <div className="flex items-center mb-6">
           <button
-            onClick={() => navigate("/admin/dashboard")}
+            onClick={() => navigate("/admin/users")}
             className="mr-4 text-gray-600 hover:text-gray-900"
           >
             <FontAwesomeIcon icon={faArrowLeft} className="h-5 w-5" />
@@ -172,7 +172,7 @@ function EditUser() {
             <div className="flex justify-end space-x-3">
               <button
                 type="button"
-                onClick={() => navigate("/admin/dashboard")}
+                onClick={() => navigate("/admin/users")}
                 className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors duration-200"
               >
                 Cancel
