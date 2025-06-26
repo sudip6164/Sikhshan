@@ -20,41 +20,53 @@ import com.sikhshan.service.JwtService;
 
 @RestController
 @RequestMapping("/api/users")
-public class AuthenticationController {	 
+public class AuthenticationController {
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	private JwtService jwtService;
-	
+
 	@PostMapping("/register")
-    public User registerUser(@RequestBody User user) {
+	public User registerUser(@RequestBody User user) {
 		String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(12));
-        user.setPassword(hashedPassword);
-        user.setCreatedAt(LocalDateTime.now());
-        return userRepository.save(user);
-    }
-	
+		user.setPassword(hashedPassword);
+		user.setCreatedAt(LocalDateTime.now());
+		return userRepository.save(user);
+	}
+
 	@PostMapping("/login")
 	public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
-	    Optional<User> optionalUser = userRepository.findByEmail(loginRequest.getEmail());
+		Optional<User> optionalUser = userRepository.findByEmail(loginRequest.getEmail());
 
-	    if (optionalUser.isPresent()) {
-	        User user = optionalUser.get();
-	        boolean passwordMatch = BCrypt.checkpw(loginRequest.getPassword(), user.getPassword());
+		if (optionalUser.isPresent()) {
+			User user = optionalUser.get();
 
-	        if (passwordMatch && user.getRole() == loginRequest.getRole()) {
-	            String token = jwtService.generateToken(user.getEmail(), user.getRole().name());
-	            return ResponseEntity.ok(Map.of(
-	                "message", "Login successful",
-	                "token", token,
-	                "role", user.getRole().name()
-	            ));
-	        } else {
-	            return ResponseEntity.status(401).body("Invalid credentials or role");
-	        }
-	    } else {
-	        return ResponseEntity.status(401).body("User not found");
-	    }
+			// Check if the role is allowed (student or faculty)
+			if (!(user.getRole().name().equalsIgnoreCase("student")
+					|| user.getRole().name().equalsIgnoreCase("faculty"))) {
+				return ResponseEntity.status(403).body("Login allowed only for students or faculty");
+			}
+
+			// Check if the role matches
+			if (user.getRole() != loginRequest.getRole()) {
+				return ResponseEntity.status(403)
+						.body("Role mismatch: Your account is registered as " + user.getRole().name());
+			}
+
+			// Check password
+			boolean passwordMatch = BCrypt.checkpw(loginRequest.getPassword(), user.getPassword());
+			if (!passwordMatch) {
+				return ResponseEntity.status(401).body("Incorrect password");
+			}
+
+			// Generate token on successful login
+			String token = jwtService.generateToken(user.getEmail(), user.getRole().name());
+			return ResponseEntity
+					.ok(Map.of("message", "Login successful", "token", token, "role", user.getRole().name()));
+		} else {
+			return ResponseEntity.status(404).body("User not found with email: " + loginRequest.getEmail());
+		}
 	}
+
 }
