@@ -1,6 +1,5 @@
-package com.sikhshan.restcontroller;
+package com.sikhshan.restcontroller.admin;
 
-import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 
@@ -13,45 +12,36 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sikhshan.dto.LoginRequest;
-import com.sikhshan.dto.LoginResponse;
 import com.sikhshan.model.User;
 import com.sikhshan.repository.UserRepository;
 import com.sikhshan.service.JwtService;
 
 @RestController
-@RequestMapping("/api/users")
-public class AuthenticationController {
+@RequestMapping("/api/admin")
+public class AdminAuthenticationController {
 	@Autowired
 	private UserRepository userRepository;
 
 	@Autowired
 	private JwtService jwtService;
 
-	@PostMapping("/register")
-	public User registerUser(@RequestBody User user) {
-		String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(12));
-		user.setPassword(hashedPassword);
-		user.setCreatedAt(LocalDateTime.now());
-		return userRepository.save(user);
-	}
-
 	@PostMapping("/login")
-	public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
+	public ResponseEntity<?> loginSuperadmin(@RequestBody LoginRequest loginRequest) {
 		Optional<User> optionalUser = userRepository.findByEmail(loginRequest.getEmail());
 
 		if (optionalUser.isPresent()) {
 			User user = optionalUser.get();
 
-			// Check if the role is allowed (student or faculty)
-			if (!(user.getRole().name().equalsIgnoreCase("student")
-					|| user.getRole().name().equalsIgnoreCase("faculty"))) {
-				return ResponseEntity.status(403).body("Login allowed only for students or faculty");
+			// Explicitly deny student or faculty
+			if (user.getRole().name().equalsIgnoreCase("student")
+					|| user.getRole().name().equalsIgnoreCase("faculty")) {
+				return ResponseEntity.status(403)
+						.body("Access denied: Students and faculty are not allowed to log in here");
 			}
 
-			// Check if the role matches
-			if (user.getRole() != loginRequest.getRole()) {
-				return ResponseEntity.status(403)
-						.body("Role mismatch: Your account is registered as " + user.getRole().name());
+			// Check if user is a superadmin
+			if (!user.getRole().name().equalsIgnoreCase("superadmin")) {
+				return ResponseEntity.status(403).body("Access denied: Only Superadmin can log in here");
 			}
 
 			// Check password
@@ -68,5 +58,4 @@ public class AuthenticationController {
 			return ResponseEntity.status(404).body("User not found with email: " + loginRequest.getEmail());
 		}
 	}
-
 }
