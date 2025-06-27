@@ -27,14 +27,6 @@ public class AuthenticationController {
 	@Autowired
 	private JwtService jwtService;
 
-	@PostMapping("/register")
-	public User registerUser(@RequestBody User user) {
-		String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(12));
-		user.setPassword(hashedPassword);
-		user.setCreatedAt(LocalDateTime.now());
-		return userRepository.save(user);
-	}
-
 	@PostMapping("/login")
 	public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
 		Optional<User> optionalUser = userRepository.findByEmail(loginRequest.getEmail());
