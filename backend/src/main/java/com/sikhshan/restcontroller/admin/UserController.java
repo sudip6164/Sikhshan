@@ -1,6 +1,8 @@
 package com.sikhshan.restcontroller.admin;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,4 +37,22 @@ public class UserController {
         // Return the saved user or a success message
         return ResponseEntity.ok(savedUser);
     }
+    
+	// List all users
+	@GetMapping
+	public ResponseEntity<List<User>> getAllUsers() {
+		List<User> users = userRepository.findAll();
+		return ResponseEntity.ok(users);
+	}
+
+	// Get user by ID
+	@GetMapping("/{id}")
+	public ResponseEntity<?> getUserById(@PathVariable Long id) {
+		Optional<User> userOpt = userRepository.findById(id);
+		if (userOpt.isPresent()) {
+			return ResponseEntity.ok(userOpt.get());
+		} else {
+			return ResponseEntity.status(404).body("User not found with id: " + id);
+		}
+	}
 }
