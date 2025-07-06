@@ -55,4 +55,24 @@ public class UserController {
 			return ResponseEntity.status(404).body("User not found with id: " + id);
 		}
 	}
+	
+	// Update user
+	@PutMapping("/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
+        Optional<User> userOpt = userRepository.findById(id);
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+
+            // Update fields
+            user.setEmail(updatedUser.getEmail());
+            user.setRole(updatedUser.getRole());
+            
+            user.setUpdatedAt(LocalDateTime.now());
+
+            User savedUser = userRepository.save(user);
+            return ResponseEntity.ok(savedUser);
+        } else {
+            return ResponseEntity.status(404).body("User not found with id: " + id);
+        }
+    }
 }
