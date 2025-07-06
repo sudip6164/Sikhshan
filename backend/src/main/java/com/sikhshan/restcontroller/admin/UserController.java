@@ -75,4 +75,16 @@ public class UserController {
             return ResponseEntity.status(404).body("User not found with id: " + id);
         }
     }
+	
+	// Delete user
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+		Optional<User> userOpt = userRepository.findById(id);
+		if (userOpt.isPresent()) {
+			userRepository.deleteById(id);
+			return ResponseEntity.ok("User deleted successfully");
+		} else {
+			return ResponseEntity.status(404).body("User not found with id: " + id);
+		}
+	}
 }
