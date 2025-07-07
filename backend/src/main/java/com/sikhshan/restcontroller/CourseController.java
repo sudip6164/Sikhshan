@@ -80,4 +80,14 @@ public class CourseController {
         return ResponseEntity.ok(responses);
     }
 
+    // Get Course by ID
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getCourseById(@PathVariable Long id) {
+        Optional<Course> courseOpt = courseRepository.findById(id);
+        if (courseOpt.isPresent()) {
+            return ResponseEntity.ok(toResponse(courseOpt.get()));
+        } else {
+            return ResponseEntity.status(404).body("Course not found with id: " + id);
+        }
+    }
 }
