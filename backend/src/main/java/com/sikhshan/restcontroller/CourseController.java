@@ -90,4 +90,33 @@ public class CourseController {
             return ResponseEntity.status(404).body("Course not found with id: " + id);
         }
     }
+    
+    // Update Course
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateCourse(@PathVariable Long id, @RequestBody CourseRequest courseRequest) {
+        Optional<Course> courseOpt = courseRepository.findById(id);
+        if (courseOpt.isEmpty()) {
+            return ResponseEntity.status(404).body("Course not found with id: " + id);
+        }
+
+        Optional<User> instructorOpt = userRepository.findById(courseRequest.getInstructorId());
+        if (instructorOpt.isEmpty() || !instructorOpt.get().getRole().name().equalsIgnoreCase("faculty")) {
+            return ResponseEntity.badRequest().body("Instructor must be a valid faculty user");
+        }
+
+        Course course = courseOpt.get();
+        course.setTitle(courseRequest.getTitle());
+        course.setCode(courseRequest.getCode());
+        course.setDescription(courseRequest.getDescription());
+        course.setCategory(courseRequest.getCategory());
+        course.setInstructor(instructorOpt.get());
+        course.setStartDate(courseRequest.getStartDate());
+        course.setEndDate(courseRequest.getEndDate());
+        course.setCredits(courseRequest.getCredits());
+        course.setImageUrl(courseRequest.getImageUrl());
+        course.setStatus(courseRequest.getStatus());
+
+        Course savedCourse = courseRepository.save(course);
+        return ResponseEntity.ok(toResponse(savedCourse));
+    }
 }
