@@ -9,7 +9,6 @@ public class CourseResponse {
 	private String description;
 	private String category;
 	private Long instructorId;
-	private String instructorName;
 	private LocalDate startDate;
 	private LocalDate endDate;
 	private Integer credits;
@@ -63,14 +62,6 @@ public class CourseResponse {
 
 	public void setInstructorId(Long instructorId) {
 		this.instructorId = instructorId;
-	}
-
-	public String getInstructorName() {
-		return instructorName;
-	}
-
-	public void setInstructorName(String instructorName) {
-		this.instructorName = instructorName;
 	}
 
 	public LocalDate getStartDate() {

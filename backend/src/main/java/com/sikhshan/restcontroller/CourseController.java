@@ -1,7 +1,10 @@
 package com.sikhshan.restcontroller;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -66,5 +69,15 @@ public class CourseController {
 		Course savedCourse = courseRepository.save(course);
 		return ResponseEntity.ok(toResponse(savedCourse));
 	}
+	
+	// List All Courses
+    @GetMapping
+    public ResponseEntity<List<CourseResponse>> getAllCourses() {
+        List<Course> courses = courseRepository.findAll();
+        List<CourseResponse> responses = courses.stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(responses);
+    }
 
 }
