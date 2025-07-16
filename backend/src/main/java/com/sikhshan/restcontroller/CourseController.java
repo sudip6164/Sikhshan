@@ -1,5 +1,10 @@
 package com.sikhshan.restcontroller;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -8,6 +13,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sikhshan.dto.CourseRequest;
 import com.sikhshan.dto.CourseResponse;
@@ -29,12 +35,13 @@ public class CourseController {
 	private CourseResponse toResponse(Course course) {
 		CourseResponse resp = new CourseResponse();
 		resp.setId(course.getId());
-		resp.setTitle(course.getTitle());
+		resp.setName(course.getName());
 		resp.setCode(course.getCode());
 		resp.setDescription(course.getDescription());
 		resp.setCategory(course.getCategory());
 		if (course.getInstructor() != null) {
 			resp.setInstructorId(course.getInstructor().getId());
+			resp.setInstructor(course.getInstructor().getName());
 		}
 		resp.setStartDate(course.getStartDate());
 		resp.setEndDate(course.getEndDate());
@@ -54,7 +61,7 @@ public class CourseController {
 		}
 
 		Course course = new Course();
-		course.setTitle(courseRequest.getTitle());
+		course.setName(courseRequest.getName());
 		course.setCode(courseRequest.getCode());
 		course.setDescription(courseRequest.getDescription());
 		course.setCategory(courseRequest.getCategory());
@@ -103,7 +110,7 @@ public class CourseController {
 		}
 
 		Course course = courseOpt.get();
-		course.setTitle(courseRequest.getTitle());
+		course.setName(courseRequest.getName());
 		course.setCode(courseRequest.getCode());
 		course.setDescription(courseRequest.getDescription());
 		course.setCategory(courseRequest.getCategory());
@@ -127,6 +134,29 @@ public class CourseController {
 			return ResponseEntity.ok("Course deleted successfully");
 		} else {
 			return ResponseEntity.status(404).body("Course not found with id: " + id);
+		}
+	}
+
+	// Upload course image by ID
+	@PostMapping("/{id}/image")
+	public ResponseEntity<?> uploadCourseImage(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+		Optional<Course> courseOpt = courseRepository.findById(id);
+		if (courseOpt.isEmpty()) {
+			return ResponseEntity.status(404).body("Course not found with id: " + id);
+		}
+		Course course = courseOpt.get();
+		String uploadDir = "uploads/course-images/";
+		File dir = new File(uploadDir);
+		if (!dir.exists()) dir.mkdirs();
+		String filename = course.getCode().replaceAll("[^a-zA-Z0-9]", "_") + "_" + System.currentTimeMillis() + "_" + file.getOriginalFilename();
+		Path filepath = Paths.get(uploadDir, filename);
+		try {
+			Files.write(filepath, file.getBytes());
+			course.setImageUrl("/" + uploadDir + filename);
+			courseRepository.save(course);
+			return ResponseEntity.ok(toResponse(course));
+		} catch (IOException e) {
+			return ResponseEntity.status(500).body("Failed to upload image");
 		}
 	}
 }

@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class CourseResponse {
 	private Long id;
-	private String title;
+	private String name;
 	private String code;
 	private String description;
 	private String category;
@@ -15,6 +15,7 @@ public class CourseResponse {
 	private String imageUrl;
 	private String status;
 	private LocalDate createdAt;
+	private String instructor;
 
 	public Long getId() {
 		return id;
@@ -24,12 +25,12 @@ public class CourseResponse {
 		this.id = id;
 	}
 
-	public String getTitle() {
-		return title;
+	public String getName() {
+		return name;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getCode() {
@@ -110,5 +111,13 @@ public class CourseResponse {
 
 	public void setCreatedAt(LocalDate createdAt) {
 		this.createdAt = createdAt;
+	}
+
+	public String getInstructor() {
+		return instructor;
+	}
+
+	public void setInstructor(String instructor) {
+		this.instructor = instructor;
 	}
 }
