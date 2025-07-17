@@ -1,6 +1,5 @@
 package com.sikhshan.restcontroller;
 
-import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sikhshan.dto.LoginRequest;
-import com.sikhshan.dto.LoginResponse;
 import com.sikhshan.model.User;
 import com.sikhshan.repository.UserRepository;
 import com.sikhshan.service.JwtService;

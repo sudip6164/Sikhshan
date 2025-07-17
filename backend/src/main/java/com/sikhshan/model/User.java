@@ -34,6 +34,24 @@ public class User {
 	@Column
 	private LocalDateTime updatedAt;
 
+    @Column(length = 100)
+    private String name;
+
+    @Column(length = 20)
+    private String phone;
+
+    @Column(length = 255)
+    private String address;
+
+    @Column(length = 10)
+    private String gender;
+
+    @Column
+    private java.time.LocalDate dateOfBirth;
+
+    @Column(length = 255)
+    private String profilePictureUrl;
+
 	public long getId() {
 		return id;
 	}
@@ -82,4 +100,51 @@ public class User {
 		this.updatedAt = updatedAt;
 	}
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public java.time.LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(java.time.LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getProfilePictureUrl() {
+        return profilePictureUrl;
+    }
+
+    public void setProfilePictureUrl(String profilePictureUrl) {
+        this.profilePictureUrl = profilePictureUrl;
+    }
 }
