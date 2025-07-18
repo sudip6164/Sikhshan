@@ -58,4 +58,9 @@ public class AdminAuthenticationController {
 			return ResponseEntity.status(404).body("User not found with email: " + loginRequest.getEmail());
 		}
 	}
+
+	@PostMapping("/logout")
+	public ResponseEntity<?> adminLogout() {
+		return ResponseEntity.ok(Map.of("message", "Admin logout successful"));
+	}
 }
