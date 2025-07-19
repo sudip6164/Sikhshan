@@ -1,6 +1,8 @@
 "use client"
 
 import { createContext, useState, useContext, useEffect } from "react"
+import { login as apiLogin, logout as apiLogout } from '../api/authApi';
+import axios from 'axios';
 
 const AuthContext = createContext()
 
@@ -21,39 +23,34 @@ export function AuthProvider({ children }) {
     setLoading(false)
   }, [])
 
-  // Login function
-  const login = (email, password, role) => {
-    // Simulate API call
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        // Mock users for different roles
-        if (role === "admin" && email === "admin@example.com" && password === "password") {
-          const user = { id: 1, name: "Admin User", email, role: "superadmin" }
-          setCurrentUser(user)
-          localStorage.setItem("user", JSON.stringify(user))
-          resolve(user)
-        } else if (role === "faculty" && email === "faculty@example.com" && password === "password") {
-          const user = { id: 2, name: "Faculty User", email, role: "faculty" }
-          setCurrentUser(user)
-          localStorage.setItem("user", JSON.stringify(user))
-          resolve(user)
-        } else if (role === "student" && email === "student@example.com" && password === "password") {
-          const user = { id: 3, name: "Student User", email, role: "student" }
-          setCurrentUser(user)
-          localStorage.setItem("user", JSON.stringify(user))
-          resolve(user)
-        } else {
-          reject(new Error("Invalid email or password for selected role"))
-        }
-      }, 1000)
-    })
-  }
+  const login = async (email, password, role) => {
+    try {
+      const response = await apiLogin(email, password, role);
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('role', response.data.role);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+      // Set current user after login
+      setCurrentUser({ email, role: response.data.role });
+      return { success: true, message: response.data.message, role: response.data.role };
+    } catch (error) {
+      return { success: false, message: error.response?.data || 'Login failed' };
+    }
+  };
 
-  // Logout function
-  const logout = () => {
-    setCurrentUser(null)
-    localStorage.removeItem("user")
-  }
+  const logout = async () => {
+    const role = currentUser?.role;
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    delete axios.defaults.headers.common['Authorization'];
+    setCurrentUser(null);
+    if (role) {
+      try {
+        await apiLogout(role);
+      } catch (e) {
+        // Ignore logout errors
+      }
+    }
+  };
 
   // Reset password function (mock)
   const resetPassword = (email) => {

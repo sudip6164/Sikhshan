@@ -62,21 +62,21 @@ function SuperadminDashboard() {
             id: 1,
             name: "John Doe",
             email: "john.doe@example.com",
-            role: "faculty",
+            role: "FACULTY",
             status: "active",
           },
           {
             id: 2,
             name: "Jane Smith",
             email: "jane.smith@example.com",
-            role: "student",
+            role: "STUDENT",
             status: "active",
           },
           {
             id: 3,
             name: "Bob Wilson",
             email: "bob.wilson@example.com",
-            role: "faculty",
+            role: "FACULTY",
             status: "inactive",
           },
         ])
@@ -89,7 +89,7 @@ function SuperadminDashboard() {
   }, [])
 
   // Redirect if not superadmin
-  if (currentUser?.role !== "superadmin") {
+  if (currentUser?.role !== "SUPERADMIN") {
     return <div className="text-center p-8">You don't have permission to view this page.</div>
   }
 

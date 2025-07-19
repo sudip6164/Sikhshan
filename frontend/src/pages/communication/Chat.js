@@ -16,7 +16,7 @@ function Chat() {
       id: 1,
       type: "private",
       name: "Dr. Smith",
-      role: "Faculty",
+      role: "FACULTY",
       avatar: "S",
       lastMessage: "Can you please submit your assignment by tomorrow?",
       lastMessageTime: "10:30 AM",

@@ -44,7 +44,7 @@ function EditUser() {
   }, [userId])
 
   // Redirect if not superadmin
-  if (currentUser?.role !== "superadmin") {
+  if (currentUser?.role !== "SUPERADMIN") {
     return <div className="text-center p-8">You don't have permission to view this page.</div>
   }
 

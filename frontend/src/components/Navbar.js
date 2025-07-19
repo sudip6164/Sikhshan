@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
-  const currentUser = { role: 'faculty' }; // Replace with actual user data
+  const currentUser = { role: 'FACULTY' }; // Replace with actual user data
 
   return (
     <nav className="bg-gray-800">
@@ -15,7 +15,7 @@ const Navbar = () => {
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-4">
                 {/* Other links */}
-                {currentUser?.role === "faculty" && (
+                {currentUser?.role === "FACULTY" && (
                   <Link
                     to="/faculty/assignments"
                     className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"

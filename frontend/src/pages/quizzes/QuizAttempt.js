@@ -14,7 +14,7 @@ function QuizAttempt() {
   const [answers, setAnswers] = useState({})
   const [timeRemaining, setTimeRemaining] = useState(0)
   const [quizSubmitted, setQuizSubmitted] = useState(false)
-  const [hasPermission, setHasPermission] = useState(currentUser?.role === "student")
+  const [hasPermission, setHasPermission] = useState(currentUser?.role === "STUDENT")
   const [isViewMode, setIsViewMode] = useState(false)
 
   const quizzes = useMemo(() => [
@@ -93,7 +93,7 @@ function QuizAttempt() {
   ], [])
 
   useEffect(() => {
-    setHasPermission(currentUser?.role === "student")
+    setHasPermission(currentUser?.role === "STUDENT")
   }, [currentUser])
 
   useEffect(() => {

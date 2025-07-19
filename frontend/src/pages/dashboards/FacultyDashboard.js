@@ -58,7 +58,7 @@ function FacultyDashboard() {
   }, [])
 
   // Redirect if not faculty
-  if (currentUser?.role !== "faculty") {
+  if (currentUser?.role !== "FACULTY") {
     return <div className="text-center p-8">You don't have permission to view this page.</div>
   }
 
