@@ -53,7 +53,12 @@ public class AdminAuthenticationController {
 			// Generate token on successful login
 			String token = jwtService.generateToken(user.getEmail(), user.getRole().name());
 			return ResponseEntity
-					.ok(Map.of("message", "Login successful", "token", token, "role", user.getRole().name()));
+					.ok(Map.of(
+							"message", "Login successful",
+							"token", token,
+							"role", user.getRole().name(),
+							"id", user.getId()
+					));
 		} else {
 			return ResponseEntity.status(404).body("User not found with email: " + loginRequest.getEmail());
 		}

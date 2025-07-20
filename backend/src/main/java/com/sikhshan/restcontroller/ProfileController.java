@@ -48,6 +48,7 @@ public class ProfileController {
         user.setAddress(request.getAddress());
         user.setGender(request.getGender());
         user.setDateOfBirth(request.getDateOfBirth());
+        user.setUpdatedAt(java.time.LocalDateTime.now());
         userRepository.save(user);
         return ResponseEntity.ok(toProfileResponse(user));
     }
