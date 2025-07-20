@@ -15,7 +15,7 @@ function AdminLogin() {
 
   // If already logged in, redirect to admin dashboard
   React.useEffect(() => {
-    if (currentUser && currentUser.role === "superadmin") {
+    if (currentUser && currentUser.role === "SUPERADMIN") {
       navigate("/admin/dashboard")
     }
   }, [currentUser, navigate])
@@ -26,8 +26,8 @@ function AdminLogin() {
     try {
       setError("")
       setLoading(true)
-      const user = await login(email, password, "admin")
-      if (user.role === "superadmin") {
+      const user = await login(email, password, "SUPERADMIN")
+      if (user.role === "SUPERADMIN") {
         navigate("/admin/dashboard")
       } else {
         setError("Access denied. Admin credentials required.")

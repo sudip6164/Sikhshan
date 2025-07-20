@@ -8,7 +8,7 @@ function AdminLayout() {
   const { currentUser } = useAuth()
 
   // Redirect to admin login if not authenticated as admin
-  if (!currentUser || currentUser.role !== "superadmin") {
+  if (!currentUser || currentUser.role !== "SUPERADMIN") {
     return <Navigate to="/admin/login" replace />
   }
 

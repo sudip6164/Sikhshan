@@ -62,7 +62,7 @@ function PlagiarismResults() {
   ])
 
   // Determine if user can access this page
-  const canAccessPage = currentUser?.role === "student"
+  const canAccessPage = currentUser?.role === "STUDENT"
 
   if (!canAccessPage) {
     return <div className="text-center p-8">You don't have permission to view this page.</div>

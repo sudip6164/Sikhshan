@@ -31,13 +31,13 @@ function Sidebar() {
 
     let chatPath = "/chat"
     let calendarPath = "/calendar"
-    if (role === "superadmin") {
+    if (role === "SUPERADMIN") {
       chatPath = "/admin/chat"
       calendarPath = "/admin/calendar"
-    } else if (role === "faculty") {
+    } else if (role === "FACULTY") {
       chatPath = "/faculty/chat"
       calendarPath = "/faculty/calendar"
-    } else if (role === "student") {
+    } else if (role === "STUDENT") {
       chatPath = "/student/chat"
       calendarPath = "/student/calendar"
     }
@@ -46,7 +46,7 @@ function Sidebar() {
       { name: "Calendar", path: calendarPath, icon: "calendar" },
     ]
 
-    if (role === "superadmin") {
+    if (role === "SUPERADMIN") {
       return [
         { name: "Dashboard", path: "/admin/dashboard", icon: "dashboard" },
         { name: "User Management", path: "/admin/users", icon: "users" },
@@ -55,7 +55,7 @@ function Sidebar() {
         { name: "Audit Logs", path: "/admin/logs", icon: "logs" },
         ...commonItems,
       ]
-    } else if (role === "faculty") {
+    } else if (role === "FACULTY") {
       return [
         { name: "Dashboard", path: "/faculty", icon: "dashboard" },
         { name: "Courses", path: "/faculty/courses", icon: "book" },
@@ -63,7 +63,7 @@ function Sidebar() {
         { name: "Quizzes", path: "/faculty/quizzes", icon: "quiz" },
         ...commonItems,
       ]
-    } else if (role === "student") {
+    } else if (role === "STUDENT") {
       return [
         { name: "Dashboard", path: "/student", icon: "dashboard" },
         { name: "Courses", path: "/student/courses", icon: "book" },
