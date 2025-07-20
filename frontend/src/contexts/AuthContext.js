@@ -24,6 +24,7 @@ export function AuthProvider({ children }) {
         setCurrentUser({
           email: decoded.sub,
           role: decoded.role,
+          id: decoded.id,
         });
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       } catch (e) {
@@ -44,6 +45,7 @@ export function AuthProvider({ children }) {
       setCurrentUser({
         email: decoded.sub,
         role: decoded.role,
+        id: decoded.id,
       });
       return { success: true, message: response.data.message, role: response.data.role };
     } catch (error) {
