@@ -3,6 +3,7 @@
 import { createContext, useState, useContext, useEffect } from "react"
 import { login as apiLogin, logout as apiLogout } from '../api/authApi';
 import axios from 'axios';
+import { jwtDecode } from "jwt-decode";
 
 const AuthContext = createContext()
 
@@ -14,11 +15,21 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  // Simulating loading user data from localStorage on app start
+  // On app load, decode JWT from localStorage and set currentUser
   useEffect(() => {
-    const userData = localStorage.getItem("user")
-    if (userData) {
-      setCurrentUser(JSON.parse(userData))
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        setCurrentUser({
+          email: decoded.sub,
+          role: decoded.role,
+        });
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      } catch (e) {
+        localStorage.removeItem("token");
+        setCurrentUser(null);
+      }
     }
     setLoading(false)
   }, [])
@@ -27,10 +38,13 @@ export function AuthProvider({ children }) {
     try {
       const response = await apiLogin(email, password, role);
       localStorage.setItem('token', response.data.token);
-      localStorage.setItem('role', response.data.role);
       axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
-      // Set current user after login
-      setCurrentUser({ email, role: response.data.role });
+      // Decode token to set current user
+      const decoded = jwtDecode(response.data.token);
+      setCurrentUser({
+        email: decoded.sub,
+        role: decoded.role,
+      });
       return { success: true, message: response.data.message, role: response.data.role };
     } catch (error) {
       return { success: false, message: error.response?.data || 'Login failed' };
@@ -40,7 +54,6 @@ export function AuthProvider({ children }) {
   const logout = async () => {
     const role = currentUser?.role;
     localStorage.removeItem('token');
-    localStorage.removeItem('role');
     delete axios.defaults.headers.common['Authorization'];
     setCurrentUser(null);
     if (role) {
