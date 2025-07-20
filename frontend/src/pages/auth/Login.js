@@ -60,11 +60,11 @@ function Login() {
         <div className="max-w-md w-full space-y-8">
           <div className="flex flex-col items-center justify-center px-4 py-0 sm:px-6 lg:px-8">
             <div className="w-full max-w-md space-y-0">
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center" style={{ caretColor: 'transparent' }}>
                 <img
                   src={logo}
                   alt="Sikhshan Logo"
-                  className="h-48 w-auto mb-0 object-contain"
+                  className="h-48 w-auto mb-0 object-contain bg-transparent select-none pointer-events-none"
                 />
                 <h2 className="text-4xl font-bold mb-4">Welcome to Sikhshan</h2>
               </div>
