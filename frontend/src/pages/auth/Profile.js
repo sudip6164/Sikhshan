@@ -107,6 +107,13 @@ function StudentProfile() {
     setIsEditing(false);
   };
 
+  // Helper to get the full profile picture URL
+  const getProfilePictureUrl = (url) => {
+    if (!url) return "/placeholder-user.jpg"; // fallback image in public/
+    if (url.startsWith("http")) return url;
+    return `http://localhost:8081${url}`;
+  };
+
   const renderProfileSection = () => (
     <div className="max-w-2xl mx-auto bg-white rounded-lg shadow p-8">
       {showMessage && <div className="mb-4 p-2 bg-green-100 text-green-800 rounded">{showMessage}</div>}
@@ -142,21 +149,16 @@ function StudentProfile() {
 
       <div className="flex flex-col items-center mb-6">
         <div className="relative">
-          {previewImage ? (
-            <img
-              src={previewImage}
-              alt="Profile"
-              className="w-32 h-32 rounded-full object-cover border-4 border-primary"
-            />
-          ) : (
-            <div className="w-32 h-32 rounded-full bg-primary flex items-center justify-center text-white text-4xl font-bold">
-              {editedProfile.name?.charAt(0) || "U"}
-            </div>
-          )}
+          <img
+            src={getProfilePictureUrl(isEditing ? editedProfile.profilePictureUrl : profile.profilePictureUrl)}
+            alt="Profile"
+            className="h-32 w-32 rounded-full object-cover border-2 border-gray-300"
+          />
           {isEditing && (
             <label
               htmlFor="profile-image"
-              className="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-lg cursor-pointer hover:bg-gray-100"
+              className="absolute bottom-2 right-2 bg-white rounded-full p-2 shadow-lg cursor-pointer hover:bg-gray-100"
+              style={{ zIndex: 10 }}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -182,12 +184,15 @@ function StudentProfile() {
                 type="file"
                 id="profile-image"
                 accept="image/*"
-                onChange={handleImageChange}
+                onChange={handleFileChange}
                 className="hidden"
               />
             </label>
           )}
         </div>
+      </div>
+
+      <div className="flex flex-col items-center mb-6">
         {isEditing && (
           <p className="mt-2 text-sm text-gray-500">
             Click the camera icon to change your profile picture

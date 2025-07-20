@@ -10,7 +10,7 @@ import AdminLayout from "./layouts/AdminLayout"
 import Login from "./pages/auth/Login"
 import AdminLogin from "./pages/auth/AdminLogin"
 import PasswordReset from "./pages/auth/PasswordReset"
-import StudentProfile from "./pages/auth/Profile"
+import Profile from "./pages/auth/Profile"
 
 // Dashboard Pages
 import SuperadminDashboard from "./pages/dashboards/SuperadminDashboard"
@@ -123,7 +123,7 @@ function App() {
             <Route path="assignments/:id/view" element={<CompletedAssignmentView />} />
             <Route path="quizzes/attempt" element={<QuizAttempt />} />
             <Route path="quizzes/:id/view" element={<QuizAttempt />} />
-            <Route path="profile" element={<StudentProfile />} />
+            <Route path="profile" element={<Profile />} />
             <Route path="notifications" element={<AllNotifications />} />
             <Route path="plagiarism" element={<PlagiarismResults />} />
             <Route path="chat" element={<Chat />} />
