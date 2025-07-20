@@ -124,12 +124,12 @@ function Sidebar() {
           collapsed ? "w-16" : "w-64"
         } space-y-6 py-7 px-2 fixed top-0 left-0 h-screen transition duration-200 ease-in-out z-30 shadow-lg`}
       >
-        <div className="flex items-center justify-center px-4 h-20">
+        <div className="flex items-center justify-center px-4 h-20" style={{ caretColor: 'transparent' }}>
           {!collapsed ? (
             <img
               src={logo}
               alt="Sikhshan Logo"
-              className="h-36 w-auto object-contain -my-8"
+              className="h-36 w-auto object-contain -my-8 bg-transparent select-none pointer-events-none"
             />
           ) : (
             <div className="h-20"></div>

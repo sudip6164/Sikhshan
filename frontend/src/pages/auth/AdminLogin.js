@@ -45,11 +45,11 @@ function AdminLogin() {
       <div className="w-full md:w-1/2 flex items-center justify-center p-8">
         <div className="max-w-md w-full space-y-8">
           <div>
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center" style={{ caretColor: 'transparent' }}>
               <img
                 src={logo}
                 alt="Sikhshan Logo"
-                className="h-48 w-auto mb-2 object-contain"
+                className="h-48 w-auto mb-2 object-contain bg-transparent select-none pointer-events-none"
               />
               <h2 className="text-3xl font-bold text-gray-900">Admin Login</h2>
               <p className="mt-1 text-sm text-gray-600">Administrative Access Portal</p>
