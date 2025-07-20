@@ -51,7 +51,7 @@ public class AdminAuthenticationController {
 			}
 
 			// Generate token on successful login
-			String token = jwtService.generateToken(user.getEmail(), user.getRole().name());
+			String token = jwtService.generateToken(user.getEmail(), user.getRole().name(), user.getId());
 			return ResponseEntity
 					.ok(Map.of(
 							"message", "Login successful",

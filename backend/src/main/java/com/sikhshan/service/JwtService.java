@@ -25,12 +25,13 @@ public class JwtService {
         this.secretKey = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String generateToken(String subject, String role) {
+    public String generateToken(String subject, String role, Long id) {
         return Jwts.builder()
                 .subject(subject)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + jwtProperties.getExpiration()))
                 .claim("role", role)
+                .claim("id", id)
                 .signWith(secretKey)
                 .compact();
     }
