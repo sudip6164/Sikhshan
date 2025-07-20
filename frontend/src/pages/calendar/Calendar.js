@@ -48,7 +48,7 @@ function Calendar() {
   ])
 
   // Remove add event functionality for students
-  const isStudent = currentUser?.role === "student"
+  const isStudent = currentUser?.role === "STUDENT"
 
   // Get days in month
   const getDaysInMonth = (year, month) => {

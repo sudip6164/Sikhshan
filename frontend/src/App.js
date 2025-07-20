@@ -74,9 +74,9 @@ function App() {
 
           {/* Admin Routes (superadmin only) */}
           <Route path="/admin" element={
-            <ProtectedRoute allowedRoles={["superadmin"]}>
+            <ProtectedRoute allowedRoles={["SUPERADMIN"]}>
               <AdminLayout />
-            </ProtectedRoute>
+            </ProtectedRoute> 
           }>
             <Route path="dashboard" element={<SuperadminDashboard />} />
             <Route path="users" element={<UserManagement />} />
@@ -91,7 +91,7 @@ function App() {
 
           {/* Faculty Routes (faculty only) */}
           <Route path="/faculty" element={
-            <ProtectedRoute allowedRoles={["faculty"]}>
+            <ProtectedRoute allowedRoles={["FACULTY"]}>
               <MainLayout />
             </ProtectedRoute>
           }>
@@ -111,7 +111,7 @@ function App() {
 
           {/* Student Routes (student only) */}
           <Route path="/student" element={
-            <ProtectedRoute allowedRoles={["student"]}>
+            <ProtectedRoute allowedRoles={["STUDENT"]}>
               <MainLayout />
             </ProtectedRoute>
           }>

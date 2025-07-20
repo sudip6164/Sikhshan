@@ -57,7 +57,7 @@ function StudentDashboard() {
   }, [])
 
   // Redirect if not student
-  if (currentUser?.role !== "student") {
+  if (currentUser?.role !== "STUDENT") {
     return <div className="text-center p-8">You don't have permission to view this page.</div>
   }
 
