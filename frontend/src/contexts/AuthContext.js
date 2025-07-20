@@ -4,6 +4,7 @@ import { createContext, useState, useContext, useEffect } from "react"
 import { login as apiLogin, logout as apiLogout } from '../api/authApi';
 import axios from 'axios';
 import { jwtDecode } from "jwt-decode";
+import { getProfile } from '../api/profileApi';
 
 const AuthContext = createContext()
 
@@ -42,11 +43,23 @@ export function AuthProvider({ children }) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
       // Decode token to set current user
       const decoded = jwtDecode(response.data.token);
-      setCurrentUser({
+      let userObj = {
         email: decoded.sub,
         role: decoded.role,
         id: decoded.id,
-      });
+      };
+      // Fetch profile to get name and profilePictureUrl
+      try {
+        const profileRes = await getProfile(decoded.id);
+        userObj = {
+          ...userObj,
+          name: profileRes.data.name,
+          profilePictureUrl: profileRes.data.profilePictureUrl,
+        };
+      } catch (e) {
+        // If profile fetch fails, fallback to basic info
+      }
+      setCurrentUser(userObj);
       return { success: true, message: response.data.message, role: response.data.role };
     } catch (error) {
       return { success: false, message: error.response?.data || 'Login failed' };
@@ -81,6 +94,7 @@ export function AuthProvider({ children }) {
     login,
     logout,
     resetPassword,
+    setCurrentUser,
   }
 
   return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>

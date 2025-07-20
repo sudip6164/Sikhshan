@@ -3,7 +3,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { getProfile, updateProfile, uploadProfilePicture } from "../../api/profileApi";
 
 function StudentProfile() {
-  const { currentUser } = useAuth();
+  const { currentUser, setCurrentUser } = useAuth();
   const [profile, setProfile] = useState({
     name: "",
     email: "",
@@ -32,6 +32,12 @@ function StudentProfile() {
           ...res.data,
           dateOfBirth: res.data.dateOfBirth || "",
         });
+        // Update AuthContext with latest name and profile picture
+        setCurrentUser((prev) => ({
+          ...prev,
+          name: res.data.name,
+          profilePictureUrl: res.data.profilePictureUrl,
+        }));
       } catch (err) {
         alert("Failed to load profile");
       } finally {
@@ -39,7 +45,7 @@ function StudentProfile() {
       }
     };
     fetchProfile();
-  }, [currentUser]);
+  }, [currentUser, setCurrentUser]);
 
   // When profile changes, update editedProfile (for cancel/reset)
   useEffect(() => {
@@ -74,6 +80,12 @@ function StudentProfile() {
       delete req.profilePictureUrl;
       const res = await updateProfile(currentUser.id, req);
       setProfile({ ...profile, ...res.data });
+      // Update AuthContext with latest name and profile picture
+      setCurrentUser((prev) => ({
+        ...prev,
+        name: res.data.name,
+        profilePictureUrl: res.data.profilePictureUrl,
+      }));
       setIsEditing(false);
       alert("Profile updated successfully");
     } catch (err) {
@@ -92,6 +104,10 @@ function StudentProfile() {
     try {
       const res = await uploadProfilePicture(currentUser.id, file);
       setProfile((prev) => ({ ...prev, profilePictureUrl: res.data.profilePictureUrl }));
+      setCurrentUser((prev) => ({
+        ...prev,
+        profilePictureUrl: res.data.profilePictureUrl,
+      }));
       alert("Profile picture updated successfully");
     } catch (err) {
       alert("Failed to upload profile picture");
