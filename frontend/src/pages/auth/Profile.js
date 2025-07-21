@@ -47,11 +47,6 @@ function StudentProfile() {
     fetchProfile();
   }, [currentUser, setCurrentUser]);
 
-  // When profile changes, update editedProfile (for cancel/reset)
-  useEffect(() => {
-    setEditedProfile(profile);
-  }, [profile]);
-
   const handleImageChange = (e) => {
     const file = e.target.files[0]
     if (file) {
@@ -117,7 +112,10 @@ function StudentProfile() {
   };
 
   // Handle edit/cancel
-  const handleEdit = () => setIsEditing(true);
+  const handleEdit = () => {
+    setEditedProfile(profile);
+    setIsEditing(true);
+  };
   const handleCancel = () => {
     setEditedProfile(profile);
     setIsEditing(false);
@@ -228,7 +226,7 @@ function StudentProfile() {
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
             />
           ) : (
-            <p className="mt-1 text-gray-900">{editedProfile.name}</p>
+            <p className="mt-1 text-gray-900">{profile.name}</p>
           )}
         </div>
 
@@ -243,7 +241,7 @@ function StudentProfile() {
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
             />
           ) : (
-            <p className="mt-1 text-gray-900">{editedProfile.email}</p>
+            <p className="mt-1 text-gray-900">{profile.email}</p>
           )}
         </div>
 
@@ -258,7 +256,7 @@ function StudentProfile() {
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
             />
           ) : (
-            <p className="mt-1 text-gray-900">{editedProfile.phone}</p>
+            <p className="mt-1 text-gray-900">{profile.phone}</p>
           )}
         </div>
 
@@ -273,7 +271,7 @@ function StudentProfile() {
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
             />
           ) : (
-            <p className="mt-1 text-gray-900">{editedProfile.address}</p>
+            <p className="mt-1 text-gray-900">{profile.address}</p>
           )}
         </div>
 
@@ -291,7 +289,7 @@ function StudentProfile() {
               <option value="Other">Other</option>
             </select>
           ) : (
-            <p className="mt-1 text-gray-900">{editedProfile.gender}</p>
+            <p className="mt-1 text-gray-900">{profile.gender}</p>
           )}
         </div>
 
@@ -306,7 +304,7 @@ function StudentProfile() {
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary"
             />
           ) : (
-            <p className="mt-1 text-gray-900">{editedProfile.dateOfBirth}</p>
+            <p className="mt-1 text-gray-900">{profile.dateOfBirth}</p>
           )}
         </div>
       </div>
