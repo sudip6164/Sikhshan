@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState } from "react"
 import { useAuth } from "../../contexts/AuthContext"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import logo from "../../assets/images/logo.png"
 
 // Helper to get the full profile picture URL
@@ -12,8 +12,16 @@ const getProfilePictureUrl = (url) => {
   return `http://localhost:8081${url}`;
 };
 
+// Helper to get the correct profile route based on role
+const getProfileRoute = (role) => {
+  if (role === "FACULTY") return "/faculty/profile";
+  if (role === "SUPERADMIN") return "/admin/profile";
+  return "/student/profile";
+};
+
 function Navbar() {
   const { currentUser, logout } = useAuth()
+  const navigate = useNavigate();
   const [isProfileOpen, setIsProfileOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isNotificationOpen, setIsNotificationOpen] = useState(false)
@@ -38,7 +46,12 @@ function Navbar() {
   }, [isProfileOpen]);
 
   const handleLogout = () => {
-    logout()
+    logout();
+    if (currentUser?.role === "SUPERADMIN") {
+      navigate("/admin/login", { replace: true });
+    } else {
+      navigate("/login", { replace: true });
+    }
   }
 
   // Mock notifications
@@ -122,7 +135,7 @@ function Navbar() {
                       <p className="text-gray-500 capitalize">{currentUser?.role}</p>
                     </div>
                     <Link
-                      to="/student/profile"
+                      to={getProfileRoute(currentUser?.role)}
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
                     >
                       Your Profile

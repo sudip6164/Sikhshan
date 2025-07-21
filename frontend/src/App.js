@@ -72,23 +72,6 @@ function App() {
           {/* Unauthorized Route */}
           <Route path="/unauthorized" element={<Unauthorized />} />
 
-          {/* Admin Routes (superadmin only) */}
-          <Route path="/admin" element={
-            <ProtectedRoute allowedRoles={["SUPERADMIN"]}>
-              <AdminLayout />
-            </ProtectedRoute> 
-          }>
-            <Route path="dashboard" element={<SuperadminDashboard />} />
-            <Route path="users" element={<UserManagement />} />
-            <Route path="users/add" element={<AddUser />} />
-            <Route path="users/edit/:userId" element={<EditUser />} />
-            <Route path="settings" element={<SystemSettings />} />
-            <Route path="reports" element={<Reports />} />
-            <Route path="logs" element={<AuditLogs />} />
-            <Route path="chat" element={<Chat />} />
-            <Route path="calendar" element={<Calendar />} />
-          </Route>
-
           {/* Faculty Routes (faculty only) */}
           <Route path="/faculty" element={
             <ProtectedRoute allowedRoles={["FACULTY"]}>
@@ -107,6 +90,25 @@ function App() {
             <Route path="quizzes/:quizId/grade/:submissionId" element={<FacultyQuizGrade />} />
             <Route path="chat" element={<Chat />} />
             <Route path="calendar" element={<Calendar />} />
+            <Route path="profile" element={<Profile />} />
+          </Route>
+
+          {/* Admin Routes (superadmin only) */}
+          <Route path="/admin" element={
+            <ProtectedRoute allowedRoles={["SUPERADMIN"]}>
+              <AdminLayout />
+            </ProtectedRoute> 
+          }>
+            <Route path="dashboard" element={<SuperadminDashboard />} />
+            <Route path="users" element={<UserManagement />} />
+            <Route path="users/add" element={<AddUser />} />
+            <Route path="users/edit/:userId" element={<EditUser />} />
+            <Route path="settings" element={<SystemSettings />} />
+            <Route path="reports" element={<Reports />} />
+            <Route path="logs" element={<AuditLogs />} />
+            <Route path="chat" element={<Chat />} />
+            <Route path="calendar" element={<Calendar />} />
+            <Route path="profile" element={<Profile />} />
           </Route>
 
           {/* Student Routes (student only) */}
