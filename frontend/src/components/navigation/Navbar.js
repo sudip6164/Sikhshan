@@ -121,7 +121,13 @@ function Navbar() {
                     />
                   ) : (
                     <span className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-primary text-white">
-                      <span className="text-sm font-medium leading-none">{currentUser?.name?.charAt(0) || "U"}</span>
+                      <span className="text-sm font-medium leading-none">
+                        {currentUser?.name?.trim()
+                          ? currentUser.name.charAt(0).toUpperCase()
+                          : currentUser?.role
+                            ? currentUser.role.charAt(0).toUpperCase()
+                            : "U"}
+                      </span>
                     </span>
                   )}
                 </button>
