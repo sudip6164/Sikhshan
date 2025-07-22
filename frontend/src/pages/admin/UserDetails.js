@@ -30,7 +30,12 @@ function UserDetails() {
         await deleteUser(userId);
         navigate("/admin/users", { state: { success: "User deleted successfully." } });
       } catch (err) {
-        setError("Failed to delete user.");
+        const msg = err?.response?.data?.message || "Failed to delete user.";
+        if (msg.includes("foreign key constraint")) {
+          setError("Cannot delete user: user is assigned as instructor to one or more courses.");
+        } else {
+          setError("Failed to delete user.");
+        }
       }
     }
   };

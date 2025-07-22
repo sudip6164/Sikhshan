@@ -15,6 +15,7 @@ import {
   faTrash,
   faChartLine,
 } from "@fortawesome/free-solid-svg-icons"
+import { getAllUsers } from '../../api/adminUserApi';
 
 function SuperadminDashboard() {
   const { currentUser } = useAuth()
@@ -22,16 +23,18 @@ function SuperadminDashboard() {
   const [greeting, setGreeting] = useState("")
   const [isSystemStatusOpen, setIsSystemStatusOpen] = useState(false)
   const [isGenerateReportOpen, setIsGenerateReportOpen] = useState(false)
-  const [stats] = useState({
-    totalUsers: 1024,
-    activeCourses: 48,
-    facultyMembers: 32,
-    students: 986,
+  const [stats, setStats] = useState({
+    totalUsers: 0,
+    activeCourses: 0,
+    facultyMembers: 0,
+    students: 0,
     totalRevenue: 0,
     systemHealth: "Good",
   })
   const [recentActivities, setRecentActivities] = useState([])
   const [users, setUsers] = useState([])
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   // Set greeting based on time of day
   useEffect(() => {
@@ -44,49 +47,24 @@ function SuperadminDashboard() {
   // Fetch dashboard data
   useEffect(() => {
     const fetchDashboardData = async () => {
+      setLoading(true);
       try {
-        // Simulate API calls
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-        
-        // Mock data for recent activities
-        setRecentActivities([
-          { id: 1, user: "Dr. Smith", action: "Created a new course", time: "2 hours ago" },
-          { id: 2, user: "Admin", action: "Added 5 new faculty members", time: "5 hours ago" },
-          { id: 3, user: "System", action: "Backup completed successfully", time: "1 day ago" },
-          { id: 4, user: "Jane Doe", action: "Generated semester reports", time: "2 days ago" },
-        ])
-
-        // Mock data for users
-        setUsers([
-          {
-            id: 1,
-            name: "John Doe",
-            email: "john.doe@example.com",
-            role: "FACULTY",
-            status: "active",
-          },
-          {
-            id: 2,
-            name: "Jane Smith",
-            email: "jane.smith@example.com",
-            role: "STUDENT",
-            status: "active",
-          },
-          {
-            id: 3,
-            name: "Bob Wilson",
-            email: "bob.wilson@example.com",
-            role: "FACULTY",
-            status: "inactive",
-          },
-        ])
+        const res = await getAllUsers();
+        setUsers(res.data);
+        setStats((prev) => ({
+          ...prev,
+          totalUsers: res.data.length,
+          facultyMembers: res.data.filter(u => u.role === "FACULTY").length,
+          students: res.data.filter(u => u.role === "STUDENT").length,
+        }));
       } catch (error) {
-        console.error("Error fetching dashboard data:", error)
+        setError("Failed to load dashboard data.");
+      } finally {
+        setLoading(false);
       }
-    }
-
-    fetchDashboardData()
-  }, [])
+    };
+    fetchDashboardData();
+  }, []);
 
   // Redirect if not superadmin
   if (currentUser?.role !== "SUPERADMIN") {
@@ -120,6 +98,35 @@ function SuperadminDashboard() {
 
   const handleGenerateReport = (reportType) => {
     setIsGenerateReportOpen(true)
+  }
+
+  // Helper to format date
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "-";
+    const date = new Date(dateStr);
+    if (isNaN(date)) return "-";
+    return date.toLocaleDateString();
+  };
+
+  // Get 3 most recent users (student or faculty)
+  const latestUsers = users
+    .filter(u => u.role === "STUDENT" || u.role === "FACULTY")
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    .slice(0, 3);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="bg-red-100 text-red-800 p-4 rounded mb-4">{error}</div>
+      </div>
+    );
   }
 
   return (
@@ -222,60 +229,36 @@ function SuperadminDashboard() {
                     Name
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Email
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Role
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Status
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Actions
+                    Created At
                   </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {users.map((user) => (
+                {latestUsers.map((user) => (
                   <tr key={user.id}>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <div className="flex-shrink-0 h-10 w-10 rounded-full bg-primary text-white flex items-center justify-center">
-                          {user.name.charAt(0)}
+                          {user.name && user.name.trim() ? user.name.charAt(0).toUpperCase() : (user.role ? user.role.charAt(0).toUpperCase() : "U")}
                         </div>
                         <div className="ml-4">
                           <div className="text-sm font-medium text-gray-900">{user.name}</div>
-                          <div className="text-sm text-gray-500">{user.email}</div>
                         </div>
                       </div>
                     </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.email}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-primary bg-opacity-10 text-primary">
                         {user.role}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span
-                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                          user.status === "active"
-                            ? "bg-green-100 text-green-800"
-                            : "bg-red-100 text-red-800"
-                        }`}
-                      >
-                        {user.status}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      <button
-                        onClick={() => handleEditUser(user.id)}
-                        className="text-primary hover:text-primary-dark mr-3"
-                      >
-                        <FontAwesomeIcon icon={faEdit} />
-                      </button>
-                      <button
-                        onClick={() => handleDeleteUser(user.id)}
-                        className="text-red-600 hover:text-red-800"
-                      >
-                        <FontAwesomeIcon icon={faTrash} />
-                      </button>
-                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm">{formatDate(user.createdAt)}</td>
                   </tr>
                 ))}
               </tbody>
