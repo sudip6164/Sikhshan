@@ -35,6 +35,14 @@ function UserDetails() {
     }
   };
 
+  // Helper to format date
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "-";
+    const date = new Date(dateStr);
+    if (isNaN(date)) return "-";
+    return date.toLocaleDateString();
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -69,6 +77,9 @@ function UserDetails() {
         </div>
         <div className="mb-4">
           <span className="font-medium text-gray-700">Status:</span> {user.status}
+        </div>
+        <div className="mb-4">
+          <span className="font-medium text-gray-700">Created At:</span> {formatDate(user.createdAt)}
         </div>
         <div className="mb-4">
           <span className="font-medium text-gray-700">User ID:</span> {user.id}

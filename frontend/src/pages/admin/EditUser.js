@@ -30,6 +30,7 @@ function EditUser() {
           email: res.data.email || "",
           role: res.data.role || "",
           status: res.data.status || "active",
+          createdAt: res.data.createdAt || "",
         });
       } catch (error) {
         setError("Failed to load user data. Please try again.")
@@ -67,6 +68,14 @@ function EditUser() {
       setSaving(false)
     }
   }
+
+  // Helper to format date
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "-";
+    const date = new Date(dateStr);
+    if (isNaN(date)) return "-";
+    return date.toLocaleDateString();
+  };
 
   if (loading) {
     return (
@@ -150,6 +159,13 @@ function EditUser() {
                 Status
               </label>
               <p className="mt-1 text-gray-900">{formData.status}</p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Created At
+              </label>
+              <p className="mt-1 text-gray-900">{formatDate(formData.createdAt)}</p>
             </div>
 
             <div className="flex justify-end space-x-3">
