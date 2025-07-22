@@ -1,47 +1,23 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { useAuth } from "../../contexts/AuthContext"
 import { Link } from "react-router-dom"
+import { getCoursesByInstructor } from '../../api/courseApi';
 
-// Mock data
-const courses = [
-  {
-    id: 1,
-    name: "Introduction to Computer Science",
-    code: "CS101",
-    students: 45,
-    progress: 60,
-    description: "An introductory course covering the basics of computer science and programming.",
-    startDate: "Jan 15, 2023",
-    endDate: "May 30, 2023",
-  },
-  {
-    id: 2,
-    name: "Data Structures and Algorithms",
-    code: "CS201",
-    students: 38,
-    progress: 40,
-    description: "A comprehensive study of data structures and algorithms with practical implementations.",
-    startDate: "Jan 15, 2023",
-    endDate: "May 30, 2023",
-  },
-  {
-    id: 3,
-    name: "Database Management Systems",
-    code: "CS301",
-    students: 32,
-    progress: 75,
-    description: "Covers database design, implementation, and management principles.",
-    startDate: "Jan 15, 2023",
-    endDate: "May 30, 2023",
-  },
-]
+// Helper to format date
+const formatDate = (dateStr) => {
+  if (!dateStr) return "-";
+  const date = new Date(dateStr);
+  if (isNaN(date)) return "-";
+  return date.toLocaleDateString();
+};
 
 function CourseListFaculty() {
-  const { currentUser } = useAuth()
-  const [selectedCourse, setSelectedCourse] = useState(null)
-  const [isCreating, setIsCreating] = useState(false)
+  const { currentUser } = useAuth();
+  const [courses, setCourses] = useState([]);
+  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [isCreating, setIsCreating] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     code: "",
@@ -49,7 +25,24 @@ function CourseListFaculty() {
     startDate: "",
     endDate: "",
     maxStudents: "",
-  })
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      setLoading(true);
+      try {
+        const res = await getCoursesByInstructor(currentUser.id);
+        setCourses(res.data);
+      } catch (err) {
+        setError("Failed to load courses.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    if (currentUser?.id) fetchCourses();
+  }, [currentUser]);
 
   // Redirect if not faculty
   if (currentUser?.role !== "FACULTY") {
@@ -82,6 +75,20 @@ function CourseListFaculty() {
     setIsCreating(false)
   }
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="bg-red-100 text-red-800 p-4 rounded mb-4">{error}</div>
+      </div>
+    );
+  }
   return (
     <div className="container mx-auto px-4 py-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
@@ -233,8 +240,9 @@ function CourseListFaculty() {
                       <div>
                         <h3 className="text-lg font-medium text-gray-900">{course.name}</h3>
                         <p className="text-sm text-gray-500 mt-1">
-                          {course.code} • {course.students} Students
+                          {course.code} • {course.students || 0} Students
                         </p>
+                        <p className="text-xs text-gray-400 mt-1">Created: {formatDate(course.createdAt)}</p>
                       </div>
                       <div className="mt-4 md:mt-0">
                         <div className="w-full md:w-32 bg-gray-200 rounded-full h-2.5">
