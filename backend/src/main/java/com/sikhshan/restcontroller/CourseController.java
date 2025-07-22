@@ -85,6 +85,14 @@ public class CourseController {
 		return ResponseEntity.ok(responses);
 	}
 
+	// List Courses by Instructor
+	@GetMapping("/instructor/{instructorId}")
+	public ResponseEntity<List<CourseResponse>> getCoursesByInstructor(@PathVariable Long instructorId) {
+		List<Course> courses = courseRepository.findByInstructorId(instructorId);
+		List<CourseResponse> responses = courses.stream().map(this::toResponse).collect(Collectors.toList());
+		return ResponseEntity.ok(responses);
+	}
+
 	// Get Course by ID
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getCourseById(@PathVariable Long id) {
