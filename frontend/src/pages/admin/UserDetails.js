@@ -43,6 +43,13 @@ function UserDetails() {
     return date.toLocaleDateString();
   };
 
+  // Helper to get the full profile picture URL
+  const getProfilePictureUrl = (url) => {
+    if (!url) return "/placeholder-user.jpg";
+    if (url.startsWith("http")) return url;
+    return `http://localhost:8081${url}`;
+  };
+
   // User-friendly role display mapping
   const roleDisplay = {
     STUDENT: "Student",
@@ -73,8 +80,18 @@ function UserDetails() {
     <div className="container mx-auto px-4 py-8 max-w-xl">
       <div className="bg-white rounded-lg shadow p-8 mb-6">
         <div className="flex flex-col items-center mb-6">
-          <div className="h-20 w-20 rounded-full bg-primary text-white flex items-center justify-center text-3xl font-bold mb-2">
-            {user.name && user.name.trim() ? user.name.charAt(0).toUpperCase() : (user.role ? user.role.charAt(0).toUpperCase() : "U")}
+          <div className="h-20 w-20 rounded-full bg-primary text-white flex items-center justify-center text-3xl font-bold mb-2 overflow-hidden">
+            {user.profilePictureUrl ? (
+              <img
+                src={getProfilePictureUrl(user.profilePictureUrl)}
+                alt="Profile"
+                className="h-20 w-20 object-cover rounded-full"
+              />
+            ) : (
+              user.name && user.name.trim()
+                ? user.name.charAt(0).toUpperCase()
+                : (user.role ? user.role.charAt(0).toUpperCase() : "U")
+            )}
           </div>
           <h1 className="text-2xl font-bold text-gray-900 mb-1">{user.name}</h1>
           <span className="px-2 py-1 rounded-full text-xs font-semibold bg-primary bg-opacity-10 text-primary mb-2">
