@@ -149,18 +149,7 @@ function EditUser() {
               <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-1">
                 Status
               </label>
-              <select
-                id="status"
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-              >
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-                <option value="suspended">Suspended</option>
-              </select>
+              <p className="mt-1 text-gray-900">{formData.status}</p>
             </div>
 
             <div className="flex justify-end space-x-3">

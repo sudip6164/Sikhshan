@@ -25,6 +25,21 @@ function UserManagement() {
   const [success, setSuccess] = useState("")
   const [viewUser, setViewUser] = useState(null)
 
+  // User-friendly role display mapping
+  const roleDisplay = {
+    STUDENT: "Student",
+    FACULTY: "Faculty",
+    SUPERADMIN: "Superadmin"
+  };
+
+  // Helper to format date
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "-";
+    const date = new Date(dateStr);
+    if (isNaN(date)) return "-";
+    return date.toLocaleDateString();
+  };
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -133,9 +148,9 @@ function UserManagement() {
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
               >
                 <option value="all">All Roles</option>
-              <option value="student">Student</option>
-              <option value="faculty">Faculty</option>
-                <option value="admin">Admin</option>
+              <option value="STUDENT">Student</option>
+              <option value="FACULTY">Faculty</option>
+              <option value="SUPERADMIN">Superadmin</option>
             </select>
           </div>
 
@@ -183,6 +198,9 @@ function UserManagement() {
                   Status
                 </th>
                 <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Created At
+                </th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
@@ -205,7 +223,7 @@ function UserManagement() {
                   </td>
                   <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                     <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-primary bg-opacity-10 text-primary">
-                        {user.role}
+                        {roleDisplay[user.role] || user.role}
                       </span>
                   </td>
                   <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
@@ -218,6 +236,9 @@ function UserManagement() {
                     >
                       {user.status}
                     </span>
+                  </td>
+                  <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm">
+                    {formatDate(user.createdAt)}
                   </td>
                   <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex space-x-2">

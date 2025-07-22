@@ -119,9 +119,9 @@ function AddUser() {
                 required
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
               >
-                <option value="student">Student</option>
-                <option value="faculty">Faculty</option>
-                <option value="admin">Admin</option>
+                <option value="STUDENT">Student</option>
+                <option value="FACULTY">Faculty</option>
+                <option value="SUPERADMIN">Superadmin</option>
               </select>
             </div>
 
