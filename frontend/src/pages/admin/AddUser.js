@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom"
 import { useAuth } from "../../contexts/AuthContext"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowLeft, faSave } from "@fortawesome/free-solid-svg-icons"
+import { createUser } from '../../api/adminUserApi';
 
 function AddUser() {
   const navigate = useNavigate()
@@ -44,10 +45,9 @@ function AddUser() {
 
     try {
       setLoading(true)
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      
-      // Mock success
+      const dataToSend = { ...formData };
+      delete dataToSend.confirmPassword;
+      await createUser(dataToSend);
       navigate("/admin/users", { state: { success: "User added successfully." } })
     } catch (error) {
       setError("Failed to create user. Please try again.")

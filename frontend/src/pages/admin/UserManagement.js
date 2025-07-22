@@ -10,6 +10,7 @@ import {
   faEye,
   faTimes
 } from "@fortawesome/free-solid-svg-icons"
+import { getAllUsers, deleteUser as apiDeleteUser } from '../../api/adminUserApi';
 
 function UserManagement() {
   const navigate = useNavigate()
@@ -27,65 +28,29 @@ function UserManagement() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        // Simulate API call
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-        
-        // Mock data
-        const mockUsers = [
-    {
-      id: 1,
-      name: "John Doe",
-            email: "john.doe@example.com",
-            role: "faculty",
-      status: "active",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-            email: "jane.smith@example.com",
-            role: "student",
-      status: "active",
-    },
-    {
-      id: 3,
-            name: "Bob Wilson",
-            email: "bob.wilson@example.com",
-            role: "faculty",
-            status: "inactive",
-          },
-          {
-            id: 4,
-            name: "Alice Brown",
-            email: "alice.brown@example.com",
-      role: "student",
-            status: "suspended",
-          },
-        ]
-        
-        setUsers(mockUsers)
-        setFilteredUsers(mockUsers)
+        const res = await getAllUsers();
+        setUsers(res.data);
+        setFilteredUsers(res.data);
       } catch (error) {
         setError("Failed to load users. Please try again.")
       } finally {
         setLoading(false)
       }
     }
-
     fetchUsers()
   }, [])
 
   useEffect(() => {
     // Filter users based on search query and filters
     const filtered = users.filter((user) => {
-      const matchesSearch = user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          user.email.toLowerCase().includes(searchQuery.toLowerCase())
-      const matchesRole = selectedRole === "all" || user.role === selectedRole
-      const matchesStatus = selectedStatus === "all" || user.status === selectedStatus
-      
-      return matchesSearch && matchesRole && matchesStatus
-    })
-    
-    setFilteredUsers(filtered)
+      const matchesSearch =
+        (user.name ? user.name.toLowerCase() : "").includes(searchQuery.toLowerCase()) ||
+        (user.email ? user.email.toLowerCase() : "").includes(searchQuery.toLowerCase());
+      const matchesRole = selectedRole === "all" || user.role === selectedRole;
+      const matchesStatus = selectedStatus === "all" || user.status === selectedStatus;
+      return matchesSearch && matchesRole && matchesStatus;
+    });
+    setFilteredUsers(filtered);
   }, [searchQuery, selectedRole, selectedStatus, users])
 
   useEffect(() => {
@@ -99,13 +64,13 @@ function UserManagement() {
   const handleDeleteUser = async (userId) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
       try {
-        // Simulate API call
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-        setUsers(users.filter((user) => user.id !== userId))
-        setSuccess("User deleted successfully.")
-        setTimeout(() => setSuccess("") , 3000)
+        await apiDeleteUser(userId);
+        setUsers(users.filter((user) => user.id !== userId));
+        setFilteredUsers(filteredUsers.filter((user) => user.id !== userId));
+        setSuccess("User deleted successfully.");
+        setTimeout(() => setSuccess("") , 3000);
       } catch (error) {
-        setError("Failed to delete user. Please try again.")
+        setError("Failed to delete user. Please try again.");
       }
     }
   }
@@ -257,7 +222,7 @@ function UserManagement() {
                   <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex space-x-2">
                       <button
-                        onClick={() => setViewUser(user)}
+                        onClick={() => navigate(`/admin/users/${user.id}`)}
                         className="text-blue-600 hover:text-blue-900 flex items-center"
                         title="View User"
                       >
@@ -283,38 +248,6 @@ function UserManagement() {
           </table>
         </div>
       </div>
-
-      {/* User Details Modal */}
-      {viewUser && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 relative animate-fade-in">
-            <button
-              className="absolute top-3 right-3 text-gray-400 hover:text-gray-600"
-              onClick={() => setViewUser(null)}
-              title="Close"
-            >
-              <FontAwesomeIcon icon={faTimes} className="h-5 w-5" />
-            </button>
-            <div className="flex flex-col items-center mb-4">
-              <div className="h-16 w-16 rounded-full bg-primary text-white flex items-center justify-center mb-2">
-                <FontAwesomeIcon icon={faUser} className="h-7 w-7" />
-              </div>
-              <h2 className="text-xl font-bold text-gray-900 mb-1">{viewUser.name}</h2>
-              <p className="text-gray-500 mb-2">{viewUser.email}</p>
-              <span className="px-2 py-1 rounded-full text-xs font-semibold bg-primary bg-opacity-10 text-primary mb-2">
-                {viewUser.role}
-              </span>
-              <span className={`px-2 py-1 rounded-full text-xs font-semibold ${viewUser.status === "active" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
-                {viewUser.status}
-              </span>
-            </div>
-            <div className="space-y-2">
-              <div><span className="font-medium text-gray-700">User ID:</span> {viewUser.id}</div>
-              {/* Add more user details here if available */}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }

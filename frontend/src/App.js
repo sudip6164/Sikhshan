@@ -55,6 +55,7 @@ import EditUser from "./pages/admin/EditUser"
 import Settings from "./pages/Settings"
 import ProtectedRoute from "./components/ProtectedRoute"
 import Unauthorized from "./pages/Unauthorized"
+import UserDetails from "./pages/admin/UserDetails";
 
 function App() {
   return (
@@ -103,6 +104,7 @@ function App() {
             <Route path="users" element={<UserManagement />} />
             <Route path="users/add" element={<AddUser />} />
             <Route path="users/edit/:userId" element={<EditUser />} />
+            <Route path="users/:userId" element={<UserDetails />} />
             <Route path="settings" element={<SystemSettings />} />
             <Route path="reports" element={<Reports />} />
             <Route path="logs" element={<AuditLogs />} />

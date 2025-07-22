@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { useAuth } from "../../contexts/AuthContext"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowLeft, faSave } from "@fortawesome/free-solid-svg-icons"
+import { getUserById, updateUser } from '../../api/adminUserApi';
 
 function EditUser() {
   const navigate = useNavigate()
@@ -23,23 +24,19 @@ function EditUser() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        // Simulate API call
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-        
-        // Mock data
+        const res = await getUserById(userId);
         setFormData({
-          name: "John Doe",
-          email: "john.doe@example.com",
-          role: "faculty",
-          status: "active",
-        })
+          name: res.data.name || "",
+          email: res.data.email || "",
+          role: res.data.role || "student",
+          status: res.data.status || "active",
+        });
       } catch (error) {
         setError("Failed to load user data. Please try again.")
       } finally {
         setLoading(false)
       }
     }
-
     fetchUserData()
   }, [userId])
 
@@ -62,11 +59,8 @@ function EditUser() {
 
     try {
       setSaving(true)
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      
-      // Mock success
-      navigate("/admin/users", { state: { success: "User updated successfully." } })
+      await updateUser(userId, formData);
+      navigate(`/admin/users/${userId}`, { state: { success: "User updated successfully." } });
     } catch (error) {
       setError("Failed to update user. Please try again.")
     } finally {
