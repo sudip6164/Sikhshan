@@ -43,6 +43,13 @@ function UserDetails() {
     return date.toLocaleDateString();
   };
 
+  // User-friendly role display mapping
+  const roleDisplay = {
+    STUDENT: "Student",
+    FACULTY: "Faculty",
+    SUPERADMIN: "Superadmin"
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -64,28 +71,31 @@ function UserDetails() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-xl">
-      <div className="bg-white rounded-lg shadow p-6 mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 mb-4">User Details</h1>
-        <div className="mb-4">
-          <span className="font-medium text-gray-700">Name:</span> {user.name}
+      <div className="bg-white rounded-lg shadow p-8 mb-6">
+        <div className="flex flex-col items-center mb-6">
+          <div className="h-20 w-20 rounded-full bg-primary text-white flex items-center justify-center text-3xl font-bold mb-2">
+            {user.name && user.name.trim() ? user.name.charAt(0).toUpperCase() : (user.role ? user.role.charAt(0).toUpperCase() : "U")}
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900 mb-1">{user.name}</h1>
+          <span className="px-2 py-1 rounded-full text-xs font-semibold bg-primary bg-opacity-10 text-primary mb-2">
+            {roleDisplay[user.role] || user.role}
+          </span>
+          <span className={`px-2 py-1 rounded-full text-xs font-semibold ${user.status === "active" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"} mb-2`}>
+            {user.status}
+          </span>
         </div>
-        <div className="mb-4">
-          <span className="font-medium text-gray-700">Email:</span> {user.email}
+        <div className="space-y-4 mb-8">
+          <div>
+            <span className="font-medium text-gray-700">Email:</span> <span className="text-gray-900">{user.email}</span>
+          </div>
+          <div>
+            <span className="font-medium text-gray-700">Created At:</span> <span className="text-gray-900">{formatDate(user.createdAt)}</span>
+          </div>
+          <div>
+            <span className="font-medium text-gray-700">User ID:</span> <span className="text-gray-900">{user.id}</span>
+          </div>
         </div>
-        <div className="mb-4">
-          <span className="font-medium text-gray-700">Role:</span> {user.role}
-        </div>
-        <div className="mb-4">
-          <span className="font-medium text-gray-700">Status:</span> {user.status}
-        </div>
-        <div className="mb-4">
-          <span className="font-medium text-gray-700">Created At:</span> {formatDate(user.createdAt)}
-        </div>
-        <div className="mb-4">
-          <span className="font-medium text-gray-700">User ID:</span> {user.id}
-        </div>
-        {/* Add more user details here if available */}
-        <div className="flex space-x-2 mt-6">
+        <div className="flex justify-end space-x-3">
           <button
             onClick={() => navigate(`/admin/users/edit/${user.id}`)}
             className="px-4 py-2 bg-primary text-white rounded hover:bg-primary-dark"
