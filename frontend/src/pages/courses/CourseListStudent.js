@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { useAuth } from "../../contexts/AuthContext"
+import { getCoursesByStudent } from '../../api/courseApi';
 
 // Mock data
 const enrolledCourses = [
@@ -105,16 +106,54 @@ const previousCourses = [
   }
 ]
 
+// Helper to format date
+const formatDate = (dateStr) => {
+  if (!dateStr) return "-";
+  const date = new Date(dateStr);
+  if (isNaN(date)) return "-";
+  return date.toLocaleDateString();
+};
+
 function CourseListStudent() {
-  const { currentUser } = useAuth()
-  const [selectedCourse, setSelectedCourse] = useState(null)
-  const [activeTab, setActiveTab] = useState("enrolled")
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
+  const { currentUser } = useAuth();
+  const [enrolledCourses, setEnrolledCourses] = useState([]);
+  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [activeTab, setActiveTab] = useState("enrolled");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      setLoading(true);
+      try {
+        const res = await getCoursesByStudent(currentUser.id);
+        setEnrolledCourses(res.data);
+      } catch (err) {
+        setError("Failed to load courses.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    if (currentUser?.id) fetchCourses();
+  }, [currentUser]);
 
   // Redirect if not student
   if (currentUser?.role !== "STUDENT") {
-    return <div className="text-center p-8">You don't have permission to view this page.</div>
+    return <div className="text-center p-8">You don't have permission to view this page.</div>;
+  }
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="bg-red-100 text-red-800 p-4 rounded mb-4">{error}</div>
+      </div>
+    );
   }
 
   return (

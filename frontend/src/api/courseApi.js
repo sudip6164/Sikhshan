@@ -14,10 +14,9 @@ export const getCoursesByInstructor = async (instructorId) => {
   return axios.get(`${API}/api/courses/instructor/${instructorId}`);
 };
 
-// Uncomment if endpoint exists
-// export const getCoursesByStudent = async (studentId) => {
-//   return axios.get(`${API}/api/courses/student/${studentId}`);
-// };
+export const getCoursesByStudent = async (studentId) => {
+  return axios.get(`${API}/api/courses/student/${studentId}`);
+};
 
 export const createCourse = async (data) => {
   return axios.post(`${API}/api/courses`, data);
