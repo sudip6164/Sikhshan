@@ -6,8 +6,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 public class Course {
@@ -31,6 +33,9 @@ public class Course {
 	private String imageUrl;
 	private String status;
 	private LocalDate createdAt;
+
+	@OneToMany(mappedBy = "course")
+	private List<Enrollment> enrollments;
 
 	public Long getId() {
 		return id;
