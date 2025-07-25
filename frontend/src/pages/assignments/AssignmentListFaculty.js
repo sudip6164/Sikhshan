@@ -68,7 +68,7 @@ function AssignmentListFaculty() {
   ]
 
   // Redirect if not faculty
-  if (currentUser?.role !== "faculty") {
+  if (currentUser?.role !== "FACULTY") {
     return <div className="text-center p-8">You don't have permission to view this page.</div>
   }
 
@@ -440,7 +440,7 @@ function AssignmentListFaculty() {
                     Delete Assignment
                   </button>
                   <Link
-                    to={`/faculty/assignments/${selectedAssignment.id}/submissions`}
+                    to={`/faculty/assignments/${selectedAssignment.id}/view`}
                     className="block w-full px-4 py-2 border border-primary text-primary text-center rounded-md hover:bg-primary-50"
                   >
                     View Submissions

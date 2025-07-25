@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import GradingFeedback from '../../components/GradingFeedback';
 
 // Mock data for a completed assignment
 const mockAssignment = {
@@ -186,18 +187,12 @@ function CompletedAssignmentView() {
               <h3 className="text-lg font-medium text-gray-900 mb-4">Submission Details</h3>
               
               {/* Grade Information */}
-              <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="text-sm font-medium text-green-800">Marks Obtained</h4>
-                    <p className="text-2xl font-bold text-green-600">{assignment.submittedMarks} / {assignment.totalMarks}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm text-green-600">Graded by {assignment.submission.gradedBy}</p>
-                    <p className="text-sm text-green-600">{formatDueDate(assignment.submission.gradedAt)}</p>
-                  </div>
-                </div>
-              </div>
+              <GradingFeedback
+                isFaculty={false}
+                grade={assignment.submittedMarks}
+                feedback={assignment.submission.feedback}
+                isGraded={true}
+              />
 
               {/* Submission File */}
               <div className="mb-6">

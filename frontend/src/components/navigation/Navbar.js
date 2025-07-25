@@ -1,15 +1,41 @@
 "use client"
 
-import { useState } from "react"
+import { useRef, useEffect, useState } from "react"
 import { useAuth } from "../../contexts/AuthContext"
 import { Link } from "react-router-dom"
 import logo from "../../assets/images/logo.png"
+
+// Helper to get the full profile picture URL
+const getProfilePictureUrl = (url) => {
+  if (!url) return "/placeholder-user.jpg";
+  if (url.startsWith("http")) return url;
+  return `http://localhost:8081${url}`;
+};
 
 function Navbar() {
   const { currentUser, logout } = useAuth()
   const [isProfileOpen, setIsProfileOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isNotificationOpen, setIsNotificationOpen] = useState(false)
+  const profileRef = useRef(null);
+  useEffect(() => {
+    let timeoutId;
+    // Close on outside click
+    function handleClickOutside(event) {
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setIsProfileOpen(false);
+      }
+    }
+    if (isProfileOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      // Auto-close after 3 seconds
+      timeoutId = setTimeout(() => setIsProfileOpen(false), 3000);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, [isProfileOpen]);
 
   const handleLogout = () => {
     logout()
@@ -68,15 +94,23 @@ function Navbar() {
               </button>
             </div>
 
-            <div className="ml-3 relative">
+            <div className="ml-3 relative" ref={profileRef}>
               <div>
                 <button
                   onClick={() => setIsProfileOpen(!isProfileOpen)}
                   className="flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition duration-150 ease-in-out"
                 >
-                  <span className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-primary text-white">
-                    <span className="text-sm font-medium leading-none">{currentUser?.name?.charAt(0) || "U"}</span>
-                  </span>
+                  {currentUser?.profilePictureUrl ? (
+                    <img
+                      src={getProfilePictureUrl(currentUser.profilePictureUrl)}
+                      alt="Profile"
+                      className="h-10 w-10 rounded-full object-cover border-2 border-primary"
+                    />
+                  ) : (
+                    <span className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-primary text-white">
+                      <span className="text-sm font-medium leading-none">{currentUser?.name?.charAt(0) || "U"}</span>
+                    </span>
+                  )}
                 </button>
               </div>
               {isProfileOpen && (

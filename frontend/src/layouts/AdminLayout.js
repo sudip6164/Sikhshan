@@ -1,43 +1,32 @@
 "use client"
-import { Outlet, Navigate } from "react-router-dom"
+import { Outlet, Navigate, useNavigate } from "react-router-dom"
 import { useAuth } from "../contexts/AuthContext"
+import Sidebar from "../components/navigation/Sidebar"
+import Navbar from "../components/navigation/Navbar"
 
 function AdminLayout() {
   const { currentUser } = useAuth()
 
   // Redirect to admin login if not authenticated as admin
-  if (!currentUser || currentUser.role !== "superadmin") {
+  if (!currentUser || currentUser.role !== "SUPERADMIN") {
     return <Navigate to="/admin/login" replace />
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Admin Header */}
-      <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center">
-            <h1 className="text-3xl font-bold text-gray-900">
-              <span className="text-primary">Admin</span> Dashboard
-            </h1>
-            <div className="flex items-center space-x-4">
-              <span className="text-gray-700">Welcome, {currentUser.name}</span>
-              <button
-                onClick={() => {
-                  // Add logout functionality
-                }}
-                className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-              >
-                Logout
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
+    <div className="flex h-screen bg-light">
+      {/* Sidebar */}
+      <Sidebar />
 
-      {/* Admin Content */}
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <Outlet />
-      </main>
+      {/* Main Content */}
+      <div className="flex flex-col flex-1 overflow-hidden">
+        {/* Use the same Navbar component as other layouts */}
+        <Navbar />
+        
+        {/* Admin Content */}
+        <main className="flex-1 overflow-y-auto p-4 md:p-6">
+          <Outlet />
+        </main>
+      </div>
     </div>
   )
 }

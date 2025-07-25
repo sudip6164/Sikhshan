@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useState, useCallback } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from "../../contexts/AuthContext"
 import logo from "../../assets/images/logo.png"
@@ -10,42 +10,46 @@ function Login() {
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
-  const [selectedRole, setSelectedRole] = useState("student") // Default to student
+  const [selectedRole, setSelectedRole] = useState("STUDENT") // Default to student
   const { login, currentUser } = useAuth()
   const navigate = useNavigate()
+
+  const redirectToDashboard = useCallback((role) => {
+    console.log("Redirecting for role:", role); // Debug log
+    switch (role) {
+      case "FACULTY":
+        navigate("/faculty")
+        break
+      case "STUDENT":
+        navigate("/student")
+        break
+      case "SUPERADMIN":
+        navigate("/admin")
+        break
+      default:
+        navigate("/login")
+    }
+  }, [navigate])
 
   // If already logged in, redirect to appropriate dashboard
   React.useEffect(() => {
     if (currentUser) {
       redirectToDashboard(currentUser.role)
     }
-  }, [currentUser])
-
-  const redirectToDashboard = (role) => {
-    switch (role) {
-      case "faculty":
-        navigate("/faculty")
-        break
-      case "student":
-        navigate("/student")
-        break
-      default:
-        navigate("/login")
-    }
-  }
+  }, [currentUser, redirectToDashboard])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-
-    try {
-      setError("")
-      setLoading(true)
-      const user = await login(email, password, selectedRole)
-      redirectToDashboard(user.role)
-    } catch (err) {
-      setError("Failed to sign in: " + err.message)
-    } finally {
-      setLoading(false)
+    setError("")
+    setLoading(true)
+    const result = await login(email, password, selectedRole)
+    setLoading(false)
+    console.log("Login result:", result); // Debug log
+    if (result.success) {
+      // Use backend role for redirect
+      redirectToDashboard(result.role || selectedRole)
+    } else {
+      setError(result.message)
     }
   }
 
@@ -56,11 +60,11 @@ function Login() {
         <div className="max-w-md w-full space-y-8">
           <div className="flex flex-col items-center justify-center px-4 py-0 sm:px-6 lg:px-8">
             <div className="w-full max-w-md space-y-0">
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center" style={{ caretColor: 'transparent' }}>
                 <img
                   src={logo}
                   alt="Sikhshan Logo"
-                  className="h-48 w-auto mb-0 object-contain"
+                  className="h-48 w-auto mb-0 object-contain bg-transparent select-none pointer-events-none"
                 />
                 <h2 className="text-4xl font-bold mb-4">Welcome to Sikhshan</h2>
               </div>
@@ -78,9 +82,9 @@ function Login() {
                   <div className="inline-flex rounded-md shadow-sm" role="group">
                     <button
                       type="button"
-                      onClick={() => setSelectedRole("student")}
+                      onClick={() => setSelectedRole("STUDENT")}
                       className={`px-4 py-2 text-sm font-medium rounded-l-lg ${
-                        selectedRole === "student"
+                        selectedRole === "STUDENT"
                           ? "bg-primary text-white"
                           : "bg-white text-gray-700 hover:bg-gray-100"
                       } border border-gray-200`}
@@ -89,9 +93,9 @@ function Login() {
                     </button>
                     <button
                       type="button"
-                      onClick={() => setSelectedRole("faculty")}
+                      onClick={() => setSelectedRole("FACULTY")}
                       className={`px-4 py-2 text-sm font-medium rounded-r-lg ${
-                        selectedRole === "faculty"
+                        selectedRole === "FACULTY"
                           ? "bg-primary text-white"
                           : "bg-white text-gray-700 hover:bg-gray-100"
                       } border border-gray-200`}
@@ -159,8 +163,8 @@ function Login() {
                 <div>
                   <button
                     type="submit"
-                    disabled={loading}
                     className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors duration-200"
+                    disabled={loading}
                   >
                     {loading ? (
                       <svg

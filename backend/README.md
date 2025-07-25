@@ -1,2 +1,0 @@
-# Sikhshan
-# Sikhsan

@@ -16,7 +16,7 @@ function Chat() {
       id: 1,
       type: "private",
       name: "Dr. Smith",
-      role: "Faculty",
+      role: "FACULTY",
       avatar: "S",
       lastMessage: "Can you please submit your assignment by tomorrow?",
       lastMessageTime: "10:30 AM",
@@ -186,7 +186,7 @@ function Chat() {
     setSelectedChat({ ...chat, unread: 0 })
   }
 
-  return (
+  const chatContent = (
     <div className="container mx-auto px-4 py-6">
       <h1 className="text-3xl font-bold text-gray-800 mb-6">Messages</h1>
 
@@ -331,6 +331,9 @@ function Chat() {
       </div>
     </div>
   )
+
+  if (!currentUser) return null
+  return chatContent
 }
 
 export default Chat

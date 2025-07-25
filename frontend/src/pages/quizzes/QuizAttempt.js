@@ -1,8 +1,9 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback, useMemo } from "react"
 import { useAuth } from "../../contexts/AuthContext"
 import { useParams, useNavigate } from "react-router-dom"
+import GradingFeedback from '../../components/GradingFeedback'
 
 function QuizAttempt() {
   const { currentUser } = useAuth()
@@ -13,10 +14,10 @@ function QuizAttempt() {
   const [answers, setAnswers] = useState({})
   const [timeRemaining, setTimeRemaining] = useState(0)
   const [quizSubmitted, setQuizSubmitted] = useState(false)
-  const [hasPermission, setHasPermission] = useState(currentUser?.role === "student")
+  const [hasPermission, setHasPermission] = useState(currentUser?.role === "STUDENT")
   const [isViewMode, setIsViewMode] = useState(false)
 
-  const quizzes = [
+  const quizzes = useMemo(() => [
     {
       id: 1,
       title: "CS101 Quiz 2: Programming Fundamentals",
@@ -89,10 +90,10 @@ function QuizAttempt() {
       totalPoints: 50,
       status: "Upcoming",
     },
-  ]
+  ], [])
 
   useEffect(() => {
-    setHasPermission(currentUser?.role === "student")
+    setHasPermission(currentUser?.role === "STUDENT")
   }, [currentUser])
 
   useEffect(() => {
@@ -105,7 +106,17 @@ function QuizAttempt() {
         navigate("/student/quizzes/attempt")
       }
     }
-  }, [id, navigate])
+  }, [id, navigate, quizzes])
+
+  const handleSubmitQuiz = useCallback(() => {
+    if (selectedQuiz) {
+      console.log("Quiz submitted:", {
+        quizId: selectedQuiz.id,
+        answers,
+      })
+      setQuizSubmitted(true)
+    }
+  }, [selectedQuiz, answers])
 
   useEffect(() => {
     let timer
@@ -116,7 +127,7 @@ function QuizAttempt() {
     }
 
     return () => clearTimeout(timer)
-  }, [quizStarted, timeRemaining, quizSubmitted])
+  }, [quizStarted, timeRemaining, quizSubmitted, handleSubmitQuiz])
 
   const handleStartQuiz = () => {
     const initialAnswers = {}
@@ -128,14 +139,6 @@ function QuizAttempt() {
 
   const handleAnswerChange = (questionId, value) => {
     setAnswers((prev) => ({ ...prev, [questionId]: value }))
-  }
-
-  const handleSubmitQuiz = () => {
-    console.log("Quiz submitted:", {
-      quizId: selectedQuiz.id,
-      answers,
-    })
-    setQuizSubmitted(true)
   }
 
   const formatTime = (seconds) => {
@@ -153,6 +156,16 @@ function QuizAttempt() {
       <h1 className="text-3xl font-bold text-gray-800 mb-6">
         {isViewMode ? "View Quiz" : "Take Quiz"}
       </h1>
+
+      {/* Show grade and feedback after quiz is submitted */}
+      {quizSubmitted && (
+        <GradingFeedback
+          isFaculty={false}
+          grade={18}
+          feedback={'Well done!'}
+          isGraded={true}
+        />
+      )}
 
       {!selectedQuiz ? (
         <div className="bg-white rounded-lg shadow p-6">
@@ -198,7 +211,7 @@ function QuizAttempt() {
                       </button>
                       {quiz.status === "Available" && (
                         <button
-                          onClick={() => setSelectedQuiz(quiz)}
+                          onClick={() => navigate(`/student/quizzes/${quiz.id}/attempt`)}
                           className="ml-2 px-3 py-1 rounded bg-green-600 text-white hover:bg-green-700"
                         >
                           Start
@@ -211,118 +224,117 @@ function QuizAttempt() {
             </table>
           </div>
         </div>
-      ) : quizSubmitted ? (
-        <div className="text-center py-8">
-          <h3 className="text-lg font-medium text-gray-900 mb-2">Quiz Submitted Successfully!</h3>
-          <p className="text-gray-500 mb-6">Your answers have been recorded.</p>
-          <button
-            onClick={() => {
-              setSelectedQuiz(null)
-              setQuizSubmitted(false)
-              setQuizStarted(false)
-            }}
-            className="px-4 py-2 rounded-md text-white bg-red-600 hover:bg-red-700"
-          >
-            Back to Quizzes
-          </button>
-        </div>
-      ) : isViewMode ? (
+      ) : (
         <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">{selectedQuiz.title}</h2>
-          <div className="space-y-4">
-            <p><strong>Course:</strong> {selectedQuiz.course}</p>
-            <p><strong>Date & Time:</strong> {new Date(`${selectedQuiz.startDate}T${selectedQuiz.startTime}`).toLocaleString()}</p>
-            <p><strong>Duration:</strong> {selectedQuiz.duration} minutes</p>
-            <p><strong>Total Points:</strong> {selectedQuiz.totalPoints}</p>
-            <p><strong>Status:</strong> {selectedQuiz.status}</p>
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-xl font-semibold text-gray-800">{selectedQuiz.title}</h2>
+            {quizStarted && !quizSubmitted && (
+              <div className="text-lg font-medium text-gray-700">
+                Time Remaining: {formatTime(timeRemaining)}
+              </div>
+            )}
           </div>
-          <div className="mt-6 space-x-4">
-            <button
-              onClick={() => navigate("/student/quizzes/attempt")}
-              className="px-4 py-2 rounded-md text-white bg-gray-600 hover:bg-gray-700"
-            >
-              Back to Quizzes
-            </button>
-            {selectedQuiz.status === "Available" && (
+
+          {!quizStarted && !quizSubmitted ? (
+            <div className="text-center">
+              <p className="text-gray-600 mb-4">
+                This quiz has {selectedQuiz.questions.length} questions and will take approximately{" "}
+                {selectedQuiz.duration} minutes to complete.
+              </p>
               <button
-                onClick={() => {
-                  setIsViewMode(false)
-                  handleStartQuiz()
-                }}
-                className="px-4 py-2 rounded-md text-white bg-red-600 hover:bg-red-700"
+                onClick={handleStartQuiz}
+                className="px-6 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors duration-200"
               >
                 Start Quiz
               </button>
-            )}
           </div>
+          ) : quizSubmitted ? (
+            <div className="text-center">
+              <p className="text-gray-600 mb-4">Quiz submitted successfully!</p>
+              <button
+                onClick={() => navigate("/student/quizzes")}
+                className="px-6 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors duration-200"
+              >
+                Back to Quizzes
+              </button>
         </div>
       ) : (
-        <form
-          onSubmit={(e) => {
-            e.preventDefault()
-            handleSubmitQuiz()
-          }}
-          className="space-y-6"
-        >
-          <div className="text-right font-bold text-red-600">
-            Time Remaining: {formatTime(timeRemaining)}
+            <div className="space-y-6">
+              {selectedQuiz.questions.map((question) => (
+                <div key={question.id} className="border border-gray-200 rounded-lg p-4">
+                  <div className="flex justify-between items-start mb-4">
+                    <h3 className="text-lg font-medium text-gray-800">{question.text}</h3>
+                    <span className="text-sm text-gray-500">{question.points} points</span>
           </div>
-          {selectedQuiz.questions.map((q, i) => (
-            <div key={q.id} className="border p-4 rounded-md">
-              <h4 className="font-medium text-gray-900 mb-2">Question {i + 1}</h4>
-              <p className="text-gray-700 mb-3">{q.text}</p>
-              {q.type === "multiple_choice" && (
+
+                  {question.type === "multiple_choice" && (
                 <div className="space-y-2">
-                  {q.options.map((opt) => (
-                    <label key={`${q.id}-opt-${opt.id}`} className="flex items-center space-x-2">
+                      {question.options.map((option) => (
+                        <label key={option.id} className="flex items-center">
                       <input
                         type="radio"
-                        name={`question-${q.id}`}
-                        value={opt.id}
-                        checked={answers[q.id] === opt.id.toString()}
-                        onChange={() => handleAnswerChange(q.id, opt.id.toString())}
-                        className="text-red-600"
+                            name={`question-${question.id}`}
+                            value={option.id}
+                            checked={answers[question.id] === option.id}
+                            onChange={() => handleAnswerChange(question.id, option.id)}
+                            className="mr-2"
                       />
-                      <span>{opt.text}</span>
+                          {option.text}
                     </label>
                   ))}
                 </div>
               )}
-              {q.type === "true_false" && (
-                <div className="flex space-x-4">
-                  {["true", "false"].map((val) => (
-                    <label key={`${q.id}-${val}`} className="flex items-center space-x-2">
+
+                  {question.type === "true_false" && (
+                    <div className="space-y-2">
+                      <label className="flex items-center">
+                        <input
+                          type="radio"
+                          name={`question-${question.id}`}
+                          value="true"
+                          checked={answers[question.id] === "true"}
+                          onChange={() => handleAnswerChange(question.id, "true")}
+                          className="mr-2"
+                        />
+                        True
+                      </label>
+                      <label className="flex items-center">
                       <input
                         type="radio"
-                        name={`question-${q.id}`}
-                        value={val}
-                        checked={answers[q.id] === val}
-                        onChange={() => handleAnswerChange(q.id, val)}
-                        className="text-red-600"
+                          name={`question-${question.id}`}
+                          value="false"
+                          checked={answers[question.id] === "false"}
+                          onChange={() => handleAnswerChange(question.id, "false")}
+                          className="mr-2"
                       />
-                      <span>{val.charAt(0).toUpperCase() + val.slice(1)}</span>
+                        False
                     </label>
-                  ))}
                 </div>
               )}
-              {q.type === "short_answer" && (
+
+                  {question.type === "short_answer" && (
                 <input
                   type="text"
-                  value={answers[q.id] || ""}
-                  onChange={(e) => handleAnswerChange(q.id, e.target.value)}
-                  className="mt-2 border p-2 rounded w-full"
-                  placeholder="Your answer..."
+                      value={answers[question.id] || ""}
+                      onChange={(e) => handleAnswerChange(question.id, e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                      placeholder="Enter your answer"
                 />
               )}
             </div>
           ))}
+
+              <div className="flex justify-end">
           <button
-            type="submit"
-            className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+                  onClick={handleSubmitQuiz}
+                  className="px-6 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors duration-200"
           >
             Submit Quiz
           </button>
-        </form>
+              </div>
+            </div>
+          )}
+        </div>
       )}
     </div>
   )

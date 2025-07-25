@@ -1,20 +1,57 @@
-import React, { useState } from "react"
-import { useAuth } from "../../contexts/AuthContext"
+import React, { useState, useEffect } from "react";
+import { useAuth } from "../../contexts/AuthContext";
+import { getProfile, updateProfile, uploadProfilePicture } from "../../api/profileApi";
 
 function StudentProfile() {
-  const { currentUser } = useAuth()
+  const { currentUser, setCurrentUser } = useAuth();
+  const [profile, setProfile] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+    gender: "",
+    dateOfBirth: "",
+    profilePictureUrl: "",
+  });
+  const [editedProfile, setEditedProfile] = useState({ ...profile });
+  const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false)
   const [previewImage, setPreviewImage] = useState(null)
   const [activeTab, setActiveTab] = useState("profile")
-  const [editedProfile, setEditedProfile] = useState({
-    name: currentUser?.name || "",
-    email: currentUser?.email || "",
-    phone: currentUser?.phone || "",
-    address: currentUser?.address || "",
-    gender: currentUser?.gender || "",
-    dateOfBirth: currentUser?.dateOfBirth || "",
-  })
-  
+  const [showMessage, setShowMessage] = useState("")
+  const [showError, setShowError] = useState("")
+
+  // Fetch profile on mount
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (!currentUser) return;
+      setLoading(true);
+      try {
+        const res = await getProfile(currentUser.id);
+        setProfile({
+          ...res.data,
+          dateOfBirth: res.data.dateOfBirth || "",
+        });
+        // Update AuthContext with latest name and profile picture
+        setCurrentUser((prev) => ({
+          ...prev,
+          name: res.data.name,
+          profilePictureUrl: res.data.profilePictureUrl,
+        }));
+      } catch (err) {
+        alert("Failed to load profile");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProfile();
+  }, [currentUser, setCurrentUser]);
+
+  // When profile changes, update editedProfile (for cancel/reset)
+  useEffect(() => {
+    setEditedProfile(profile);
+  }, [profile]);
+
   const handleImageChange = (e) => {
     const file = e.target.files[0]
     if (file) {
@@ -26,50 +63,92 @@ function StudentProfile() {
     }
   }
 
-  const handleEdit = () => {
-    setIsEditing(true)
-  }
-
-  const handleSave = () => {
-    // Here you would typically make an API call to update the profile
-    setIsEditing(false)
-  }
-
-  const handleCancel = () => {
-    setEditedProfile({
-      name: currentUser?.name || "",
-      email: currentUser?.email || "",
-      phone: currentUser?.phone || "",
-      address: currentUser?.address || "",
-      gender: currentUser?.gender || "",
-      dateOfBirth: currentUser?.dateOfBirth || "",
-    })
-    setIsEditing(false)
-  }
-
+  // Handle form field changes (edit mode)
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setEditedProfile((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
-  }
+    const { name, value } = e.target;
+    setEditedProfile((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Handle profile update (save)
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!currentUser) return;
+    setLoading(true);
+    try {
+      const req = { ...editedProfile };
+      delete req.email; // email is not updatable
+      delete req.profilePictureUrl;
+      const res = await updateProfile(currentUser.id, req);
+      setProfile({ ...profile, ...res.data });
+      // Update AuthContext with latest name and profile picture
+      setCurrentUser((prev) => ({
+        ...prev,
+        name: res.data.name,
+        profilePictureUrl: res.data.profilePictureUrl,
+      }));
+      setIsEditing(false);
+      alert("Profile updated successfully");
+    } catch (err) {
+      alert("Failed to update profile");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Handle profile picture upload
+  const handleFileChange = async (e) => {
+    if (!currentUser) return;
+    const file = e.target.files[0];
+    if (!file) return;
+    setLoading(true);
+    try {
+      const res = await uploadProfilePicture(currentUser.id, file);
+      setProfile((prev) => ({ ...prev, profilePictureUrl: res.data.profilePictureUrl }));
+      setCurrentUser((prev) => ({
+        ...prev,
+        profilePictureUrl: res.data.profilePictureUrl,
+      }));
+      alert("Profile picture updated successfully");
+    } catch (err) {
+      alert("Failed to upload profile picture");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Handle edit/cancel
+  const handleEdit = () => setIsEditing(true);
+  const handleCancel = () => {
+    setEditedProfile(profile);
+    setIsEditing(false);
+  };
+
+  // Helper to get the full profile picture URL
+  const getProfilePictureUrl = (url) => {
+    if (!url) return "/placeholder-user.jpg"; // fallback image in public/
+    if (url.startsWith("http")) return url;
+    return `http://localhost:8081${url}`;
+  };
 
   const renderProfileSection = () => (
     <div className="max-w-2xl mx-auto bg-white rounded-lg shadow p-8">
+      {showMessage && <div className="mb-4 p-2 bg-green-100 text-green-800 rounded">{showMessage}</div>}
+      {showError && <div className="mb-4 p-2 bg-red-100 text-red-800 rounded">{showError}</div>}
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-gray-900">Profile Information</h2>
         {!isEditing ? (
-          <button
-            onClick={handleEdit}
-            className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors duration-200"
-          >
-            Edit Profile
-          </button>
+          <div className="flex space-x-2">
+            <button
+              onClick={handleEdit}
+              className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors duration-200"
+            >
+              Edit Profile
+            </button>
+          </div>
         ) : (
           <div className="flex space-x-2">
             <button
-              onClick={handleSave}
+              onClick={handleSubmit}
               className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors duration-200"
             >
               Save Changes
@@ -84,24 +163,18 @@ function StudentProfile() {
         )}
       </div>
 
-      {/* Profile Image Section */}
       <div className="flex flex-col items-center mb-6">
         <div className="relative">
-          {previewImage ? (
-            <img
-              src={previewImage}
-              alt="Profile"
-              className="w-32 h-32 rounded-full object-cover border-4 border-primary"
-            />
-          ) : (
-            <div className="w-32 h-32 rounded-full bg-primary flex items-center justify-center text-white text-4xl font-bold">
-              {editedProfile.name?.charAt(0) || "U"}
-            </div>
-          )}
+          <img
+            src={getProfilePictureUrl(isEditing ? editedProfile.profilePictureUrl : profile.profilePictureUrl)}
+            alt="Profile"
+            className="h-32 w-32 rounded-full object-cover border-2 border-gray-300"
+          />
           {isEditing && (
             <label
               htmlFor="profile-image"
-              className="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-lg cursor-pointer hover:bg-gray-100"
+              className="absolute bottom-2 right-2 bg-white rounded-full p-2 shadow-lg cursor-pointer hover:bg-gray-100"
+              style={{ zIndex: 10 }}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -127,12 +200,15 @@ function StudentProfile() {
                 type="file"
                 id="profile-image"
                 accept="image/*"
-                onChange={handleImageChange}
+                onChange={handleFileChange}
                 className="hidden"
               />
             </label>
           )}
         </div>
+      </div>
+
+      <div className="flex flex-col items-center mb-6">
         {isEditing && (
           <p className="mt-2 text-sm text-gray-500">
             Click the camera icon to change your profile picture
