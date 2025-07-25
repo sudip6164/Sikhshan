@@ -21,6 +21,15 @@ import StudentDashboard from "./pages/dashboards/StudentDashboard"
 import CourseListFaculty from "./pages/courses/CourseListFaculty"
 import CourseListStudent from "./pages/courses/CourseListStudent"
 import ViewCourse from "./pages/courses/ViewCourse"
+import CourseCreateFaculty from "./pages/courses/CourseCreateFaculty"
+import CourseEditFaculty from "./pages/courses/CourseEditFaculty"
+import CourseAttachmentsFaculty from "./pages/courses/CourseAttachmentsFaculty"
+import AvailableCoursesStudent from "./pages/courses/AvailableCoursesStudent"
+import EnrollCourseStudent from "./pages/courses/EnrollCourseStudent"
+import UnenrollCourseStudent from "./pages/courses/UnenrollCourseStudent"
+import CourseDetailFaculty from "./pages/courses/CourseDetailFaculty"
+import CourseDetailStudent from "./pages/courses/CourseDetailStudent"
+import CourseStudentListFaculty from "./pages/courses/CourseStudentListFaculty";
 
 // Assignment Pages
 import AssignmentCreation from "./pages/assignments/AssignmentCreation"
@@ -81,6 +90,9 @@ function App() {
           }>
             <Route index element={<FacultyDashboard />} />
             <Route path="courses" element={<CourseListFaculty />} />
+            <Route path="courses/:courseId/edit" element={<CourseEditFaculty />} />
+            <Route path="courses/:courseId" element={<CourseDetailFaculty />} />
+            <Route path="courses/:courseId/students" element={<CourseStudentListFaculty />} />
             <Route path="assignments/create" element={<AssignmentCreation />} />
             <Route path="assignments" element={<AssignmentListFaculty />} />
             <Route path="assignments/:id/view" element={<FacultyAssignmentView />} />
@@ -121,7 +133,10 @@ function App() {
           }>
             <Route index element={<StudentDashboard />} />
             <Route path="courses" element={<CourseListStudent />} />
-            <Route path="courses/:courseId" element={<ViewCourse />} />
+            <Route path="courses/available" element={<AvailableCoursesStudent />} />
+            <Route path="courses/enroll" element={<EnrollCourseStudent />} />
+            <Route path="courses/unenroll" element={<UnenrollCourseStudent />} />
+            <Route path="courses/:courseId" element={<CourseDetailStudent />} />
             <Route path="assignments/submit" element={<AssignmentSubmission />} />
             <Route path="assignments/:id/submit" element={<AssignmentView />} />
             <Route path="assignments/:id/view" element={<CompletedAssignmentView />} />

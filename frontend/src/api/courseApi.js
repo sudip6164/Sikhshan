@@ -28,4 +28,8 @@ export const updateCourse = async (id, data) => {
 
 export const deleteCourse = async (id) => {
   return axios.delete(`${API}/api/courses/${id}`);
+};
+
+export const unenrollFromCourse = async (courseId) => {
+  return axios.delete(`${API}/api/courses/${courseId}/unenroll`);
 }; 

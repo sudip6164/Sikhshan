@@ -297,12 +297,15 @@ function CourseListFaculty() {
                 </div>
 
                 <div className="mt-6 space-y-3">
-                  <button className="w-full px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark">
+                  <Link to={`/faculty/courses/${selectedCourse.id}`} className="w-full px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark block text-center">
                     Manage Course
-                  </button>
-                  <button className="w-full px-4 py-2 border border-primary text-primary rounded-md hover:bg-primary-50">
+                  </Link>
+                  <Link
+                    to={`/faculty/courses/${selectedCourse.id}/students`}
+                    className="w-full px-4 py-2 border border-primary text-primary rounded-md hover:bg-primary-50 block text-center"
+                  >
                     View Student List
-                  </button>
+                  </Link>
                   <Link to="/faculty/assignments/create" className="w-full px-4 py-2 border border-primary text-primary rounded-md hover:bg-primary-50 block text-center">
                     Create Assignment
                   </Link>
