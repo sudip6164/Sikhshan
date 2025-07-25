@@ -35,3 +35,28 @@ build/
 
 ### dot env ###
 .env
+
+# Ignore all files in uploads directory
+/uploads/
+uploads/
+
+# Ignore common document and image file types everywhere
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.svg
+*.bmp
+*.webp
+*.ico
+*.pdf
+*.doc
+*.docx
+*.ppt
+*.pptx
+*.xls
+*.xlsx
+*.zip
+*.rar
+*.tar
+*.gz
